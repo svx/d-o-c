@@ -43,9 +43,7 @@ else
 fi
 
 # Check for Docker Compose
-if ! command -v docker &> /dev/null; then
-    echo "⚠️  Docker is not installed."
-elif docker compose version &> /dev/null; then
+if docker compose version &> /dev/null; then
     echo "✅ Docker Compose found: $(docker compose version)"
 elif command -v docker-compose &> /dev/null; then
     echo "✅ Docker Compose found: $(docker-compose --version)"

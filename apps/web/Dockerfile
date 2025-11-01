@@ -5,6 +5,7 @@ WORKDIR /app
 # Copy workspace files
 COPY pnpm-workspace.yaml ./
 COPY package.json ./
+COPY pnpm-lock.yaml ./
 
 # Copy Web application
 COPY apps/web ./apps/web
