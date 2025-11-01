@@ -7,7 +7,8 @@
     
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/local/bin/docker-compose</string>
+        <string>/usr/local/bin/docker</string>
+        <string>compose</string>
         <string>up</string>
         <string>-d</string>
     </array>

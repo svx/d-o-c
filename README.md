@@ -49,19 +49,19 @@ This will start:
 Build and start all services:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 View logs:
 
 ```bash
-docker-compose logs -f
+docker compose logs -f
 ```
 
 Stop all services:
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ## 🍎 macOS Auto-Startup

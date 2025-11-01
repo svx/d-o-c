@@ -43,10 +43,14 @@ else
 fi
 
 # Check for Docker Compose
-if ! command -v docker-compose &> /dev/null; then
-    echo "⚠️  Docker Compose is not installed."
-else
+if ! command -v docker &> /dev/null; then
+    echo "⚠️  Docker is not installed."
+elif docker compose version &> /dev/null; then
+    echo "✅ Docker Compose found: $(docker compose version)"
+elif command -v docker-compose &> /dev/null; then
     echo "✅ Docker Compose found: $(docker-compose --version)"
+else
+    echo "⚠️  Docker Compose is not installed."
 fi
 
 echo ""
@@ -54,7 +58,7 @@ echo "🎉 Setup complete!"
 echo ""
 echo "Next steps:"
 echo "  1. Run in development mode:  pnpm dev"
-echo "  2. Run with Docker:          docker-compose up -d"
+echo "  2. Run with Docker:          docker compose up -d"
 echo "  3. View the web app:         http://localhost:8080"
 echo "  4. View the API:             http://localhost:3000/api/docs"
 echo ""

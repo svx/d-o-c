@@ -23,16 +23,16 @@ clean: ## Clean all node_modules
 	rm -rf node_modules
 
 docker-build: ## Build Docker images
-	docker-compose build
+	docker compose build
 
 docker-up: ## Start Docker containers
-	docker-compose up -d
+	docker compose up -d
 
 docker-down: ## Stop Docker containers
-	docker-compose down
+	docker compose down
 
 docker-logs: ## View Docker container logs
-	docker-compose logs -f
+	docker compose logs -f
 
 setup-macos: ## Setup macOS auto-startup (requires manual path update in plist file)
 	@echo "Before running this, update the WorkingDirectory path in macos/com.doc.docker-compose.plist"
