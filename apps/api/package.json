@@ -1,0 +1,17 @@
+{
+  "name": "@d-o-c/api",
+  "version": "1.0.0",
+  "description": "API service for Documentation Operations Center",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node src/index.js",
+    "start": "node src/index.js",
+    "clean": "rm -rf node_modules"
+  },
+  "keywords": ["api", "express"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

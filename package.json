@@ -1,0 +1,20 @@
+{
+  "name": "d-o-c",
+  "version": "1.0.0",
+  "description": "Documentation Operations Center - Multi-application Node.js workspace",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --parallel --stream -r dev",
+    "build": "pnpm -r build",
+    "start": "pnpm --parallel --stream -r start",
+    "clean": "pnpm -r clean"
+  },
+  "keywords": [
+    "documentation",
+    "workspace",
+    "pnpm"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {}
+}
