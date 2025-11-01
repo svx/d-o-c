@@ -1,45 +1,67 @@
 services:
-  api:
-    build:
-      context: .
-      dockerfile: apps/api/Dockerfile
-    container_name: doc-api
-    ports:
-      - "3000:3000"
-    environment:
-      - PORT=3000
-      - NODE_ENV=production
-    restart: unless-stopped
-    networks:
-      - doc-network
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
   web:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
     container_name: doc-web
     ports:
-      - "8080:8080"
-    environment:
-      - PORT=8080
-      - NODE_ENV=production
+      - "8080:80"
+    volumes:
+      - caddy_data_web:/data
+      - caddy_config_web:/config
     restart: unless-stopped
     networks:
       - doc-network
-    depends_on:
-      - api
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+
+  docs:
+    build:
+      context: .
+      dockerfile: apps/docs/Dockerfile
+    container_name: doc-docs
+    ports:
+      - "8081:80"
+    volumes:
+      - caddy_data_docs:/data
+      - caddy_config_docs:/config
+    restart: unless-stopped
+    networks:
+      - doc-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: doc-uptime-kuma
+    ports:
+      - "3001:3001"
+    volumes:
+      - uptime_kuma_data:/app/data
+    restart: unless-stopped
+    networks:
+      - doc-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  caddy_data_web:
+  caddy_config_web:
+  caddy_data_docs:
+  caddy_config_docs:
+  uptime_kuma_data:
 
 networks:
   doc-network:

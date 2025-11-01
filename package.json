@@ -7,7 +7,10 @@
     "dev": "pnpm --parallel --stream -r dev",
     "build": "pnpm -r build",
     "start": "pnpm --parallel --stream -r start",
-    "clean": "pnpm -r clean"
+    "clean": "pnpm -r clean",
+    "docs:dev": "pnpm --filter docs dev",
+    "docs:build": "pnpm --filter docs build",
+    "docs:preview": "pnpm --filter docs preview"
   },
   "keywords": [
     "documentation",

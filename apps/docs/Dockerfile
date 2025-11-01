@@ -8,8 +8,8 @@ COPY pnpm-workspace.yaml ./
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 
-# Copy Web application
-COPY apps/web ./apps/web
+# Copy docs application
+COPY apps/docs ./apps/docs
 
 # Install pnpm
 RUN npm install -g pnpm
@@ -17,19 +17,19 @@ RUN npm install -g pnpm
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 
-WORKDIR /app/apps/web
+WORKDIR /app/apps/docs
 
-# Build CSS
-RUN npm run build:css
+# Build VitePress documentation
+RUN pnpm build
 
 # Production stage
 FROM caddy:2-alpine
 
 # Copy Caddyfile
-COPY apps/web/Caddyfile /etc/caddy/Caddyfile
+COPY apps/docs/Caddyfile /etc/caddy/Caddyfile
 
-# Copy built static files
-COPY --from=builder /app/apps/web/public /usr/share/caddy
+# Copy built VitePress files
+COPY --from=builder /app/apps/docs/.vitepress/dist /usr/share/caddy
 
 # Expose port 80
 EXPOSE 80

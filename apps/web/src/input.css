@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-brand: #5469d4;
+    --color-brand-hover: #4c63d2;
+  }
+}

@@ -1,0 +1,41 @@
+:80 {
+	root * /usr/share/caddy
+	file_server
+	
+	# Enable compression
+	encode gzip
+	
+	# Security headers
+	header {
+		# Remove server info
+		-Server
+		
+		# Security headers
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		X-XSS-Protection "1; mode=block"
+		Referrer-Policy "strict-origin-when-cross-origin"
+	}
+	
+	# Handle SPA routing for VitePress
+	try_files {path} {path}/ /index.html
+	
+	# Cache static assets
+	@static {
+		file
+		path *.css *.js *.png *.jpg *.jpeg *.gif *.svg *.ico *.woff *.woff2 *.ttf *.eot *.json
+	}
+	header @static Cache-Control "public, max-age=31536000"
+	
+	# Cache HTML files for shorter time
+	@html {
+		file
+		path *.html
+	}
+	header @html Cache-Control "public, max-age=3600"
+	
+	# Health check endpoint
+	respond /health 200 {
+		body "VitePress Documentation OK"
+	}
+}

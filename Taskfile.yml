@@ -1,0 +1,128 @@
+version: '3'
+
+tasks:
+  help:
+    desc: Show this help message
+    cmds:
+    - task --list
+
+  install:
+    desc: Install all dependencies
+    cmds:
+    - pnpm install
+
+  dev:
+    desc: Run all apps in development mode
+    cmds:
+    - pnpm dev
+
+  start:
+    desc: Run all apps in production mode
+    cmds:
+    - pnpm start
+
+  build:
+    desc: Build all apps
+    cmds:
+    - pnpm build
+
+  clean:
+    desc: Clean all node_modules
+    cmds:
+    - pnpm clean
+    - rm -rf node_modules
+
+  docker:build:
+    desc: Build all Docker images (web, docs, uptime-kuma)
+    cmds:
+    - docker compose build --no-cache
+
+  docker:up:
+    desc: Start all Docker containers with persistent data
+    cmds:
+    - docker compose up -d
+
+  docker:down:
+    desc: Stop all Docker containers
+    cmds:
+    - docker compose down
+
+  docker:restart:
+    desc: Restart all Docker containers
+    cmds:
+    - docker compose restart
+
+  docker:logs:
+    desc: View logs from all Docker containers
+    cmds:
+    - docker compose logs -f
+
+  docker:logs:web:
+    desc: View logs from web container only
+    cmds:
+    - docker compose logs -f web
+
+  docker:logs:docs:
+    desc: View logs from docs container only
+    cmds:
+    - docker compose logs -f docs
+
+  docker:logs:uptime:
+    desc: View logs from uptime-kuma container only
+    cmds:
+    - docker compose logs -f uptime-kuma
+
+  docker:status:
+    desc: Show status of all containers
+    cmds:
+    - docker compose ps
+
+  docker:clean:
+    desc: Clean up Docker containers, networks, and volumes
+    cmds:
+    - docker compose down -v
+    - docker system prune -f
+
+  services:info:
+    desc: Show information about running services
+    cmds:
+    - |
+      echo "🌐 Web Frontend:      http://localhost:8080"
+      echo "📚 Documentation:    http://localhost:8081"
+      echo "📊 Status Monitor:   http://localhost:3001"
+      echo ""
+      echo "Container Status:"
+      docker compose ps
+
+  setup:macos:
+    desc: Setup macOS auto-startup (requires manual path update in plist file)
+    cmds:
+    - |
+      echo "Before running this, update the WorkingDirectory path in macos/com.doc.docker-compose.plist"
+      read -p "Have you updated the path? (y/n) " -n 1 -r
+      echo
+      if [[ $REPLY =~ ^[Yy]$ ]]; then
+        cp macos/com.doc.docker-compose.plist ~/Library/LaunchAgents/
+        launchctl load ~/Library/LaunchAgents/com.doc.docker-compose.plist
+        echo "✅ LaunchAgent installed and loaded"
+      else
+        echo "❌ Setup cancelled. Please update the path first."
+      fi
+
+  docs:dev:
+    desc: Start VitePress documentation development server
+    dir: apps/docs
+    cmds:
+    - pnpm dev
+
+  docs:build:
+    desc: Build VitePress documentation
+    dir: apps/docs
+    cmds:
+    - pnpm build
+
+  docs:preview:
+    desc: Preview VitePress documentation build
+    dir: apps/docs
+    cmds:
+    - pnpm preview
