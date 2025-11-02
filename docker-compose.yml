@@ -32,12 +32,38 @@ services:
     restart: unless-stopped
     networks:
       - doc-network
+    depends_on:
+      - meilisearch
+    environment:
+      - MEILISEARCH_HOST=http://meilisearch:7700
+      - MEILISEARCH_API_KEY=masterKey123
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80/"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.10
+    container_name: doc-meilisearch
+    ports:
+      - "7700:7700"
+    environment:
+      - MEILI_ENV=development
+      - MEILI_MASTER_KEY=masterKey123
+      - MEILI_NO_ANALYTICS=true
+    volumes:
+      - meilisearch_data:/meili_data
+    restart: unless-stopped
+    networks:
+      - doc-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7700/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   uptime-kuma:
     image: louislam/uptime-kuma:1
@@ -62,6 +88,7 @@ volumes:
   caddy_data_docs:
   caddy_config_docs:
   uptime_kuma_data:
+  meilisearch_data:
 
 networks:
   doc-network:

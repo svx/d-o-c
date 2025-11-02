@@ -9,7 +9,8 @@ A modern Node.js repository with containerized services using pnpm workspaces, A
 This repository contains a complete containerized documentation and monitoring infrastructure:
 
 - **🌐 Web Frontend** (`apps/web`): Modern web interface with Tailwind CSS served by Caddy
-- **📚 Documentation** (`apps/docs`): Antora-powered documentation served by Caddy  
+- **📚 Documentation** (`apps/docs`): Antora-powered documentation with Meilisearch search served by Caddy  
+- **🔍 Search Engine** (`meilisearch`): High-performance search engine for documentation with real-time indexing
 - **📊 Status Monitor**: Uptime Kuma dashboard for service monitoring and alerts
 
 ## 🚀 Quick Start
@@ -71,7 +72,8 @@ task docker:up
 
 This will start three services:
 - **🌐 Web Frontend**: <http://localhost:8080> (Caddy + Tailwind CSS)
-- **📚 Documentation**: <http://localhost:8081> (Caddy + Antora)  
+- **📚 Documentation**: <http://localhost:8081> (Caddy + Antora + Meilisearch Search)  
+- **🔍 Search Engine**: <http://localhost:7700> (Meilisearch API)
 - **📊 Status Monitor**: <http://localhost:3001> (Uptime Kuma)
 
 View logs from all services:
@@ -86,6 +88,7 @@ View logs from individual services:
 task docker:logs:web      # Web frontend logs
 task docker:logs:docs     # Documentation logs  
 task docker:logs:uptime   # Uptime Kuma logs
+task docker:logs:meilisearch # Meilisearch logs
 ```
 
 Check service status:
@@ -119,6 +122,60 @@ Or view the available tasks:
 ```bash
 task --list
 ```
+
+## 🔍 Meilisearch Search Setup
+
+The documentation includes a powerful search engine powered by Meilisearch that provides instant search with typo tolerance and highlighting.
+
+### Automatic Setup with Docker
+
+When you run `task docker:up`, Meilisearch is automatically:
+
+1. **Started**: Meilisearch v1.10 container runs on port 7700
+2. **Configured**: CORS enabled, main key authentication setup
+3. **Indexed**: Documentation is automatically indexed from the built Antora output
+
+### Manual Search Operations
+
+```bash
+# Check search status and document count
+task search:status
+
+# Re-index documentation (useful after content changes)
+task search:index
+
+# Test search functionality
+task search:test
+
+# Clear search index (useful for troubleshooting)
+task search:clear
+```
+
+### Search Features
+
+- **🚀 Instant Search**: Results appear as you type with <20ms response time
+- **🎯 Typo Tolerance**: Finds results even with spelling mistakes  
+- **🔍 Highlighting**: Search terms are highlighted in results
+- **📱 Mobile Optimized**: Works seamlessly on all devices
+- **⚡ Auto-complete**: Smart suggestions based on document content
+
+### Search Integration
+
+The search functionality is integrated into the Antora UI and includes:
+
+- **Multi-input Support**: Works with both desktop and mobile search inputs
+- **Real-time Results**: No page refresh needed, results update instantly  
+- **Content Highlighting**: Matching text is highlighted in search results
+- **Deep Linking**: Click results to navigate directly to relevant sections
+
+### Troubleshooting Search
+
+If search is not working:
+
+1. **Check Meilisearch Status**: `task search:status`
+2. **Verify Container Health**: `task docker:status`
+3. **Re-index Documents**: `task search:index`
+4. **Check Logs**: `task docker:logs:meilisearch`
 
 ## 🍎 macOS Auto-Startup
 
@@ -158,8 +215,11 @@ d-o-c/
 │   │   ├── Dockerfile         # Multi-stage build with Caddy
 │   │   ├── tailwind.config.js # Tailwind configuration
 │   │   └── package.json
-│   └── docs/                   # Antora documentation with Caddy
+│   └── docs/                   # Antora documentation with Caddy + Meilisearch
 │       ├── src/                # Antora documentation source
+│       ├── indexer/            # Meilisearch document indexer
+│       │   ├── index.js        # Node.js indexing script
+│       │   └── package.json    # Indexer dependencies
 │       ├── antora-playbook.yml # Antora configuration
 │       ├── build/              # Built documentation output
 │       ├── Caddyfile          # Caddy server config for docs
@@ -168,7 +228,7 @@ d-o-c/
 │       └── package.json
 ├── macos/
 │   └── com.doc.docker-compose.plist
-├── docker-compose.yml          # Three containerized services
+├── docker-compose.yml          # Four containerized services
 ├── Taskfile.yml               # Enhanced task runner
 ├── pnpm-workspace.yaml
 └── package.json
@@ -189,6 +249,12 @@ d-o-c/
 - `task docs:build` - Build Antora documentation for production
 - `task docs:serve` - Serve built Antora documentation
 
+### Search Tasks
+- `task search:index` - Index documentation in Meilisearch
+- `task search:status` - Check Meilisearch status and document count
+- `task search:clear` - Clear all documents from Meilisearch index
+- `task search:test` - Test search functionality
+
 ### Docker Tasks
 - `task docker:build` - Build all Docker images (web, docs, uptime-kuma)
 - `task docker:up` - Start all containerized services
@@ -201,6 +267,7 @@ d-o-c/
 - `task docker:logs:web` - View web frontend logs only
 - `task docker:logs:docs` - View documentation logs only  
 - `task docker:logs:uptime` - View Uptime Kuma logs only
+- `task docker:logs:meilisearch` - View Meilisearch search engine logs only
 
 ### Service Management
 - `task services:info` - Show service URLs and status
@@ -253,28 +320,47 @@ Uptime Kuma monitoring dashboard for tracking service availability.
 
 **Production**: <http://localhost:3001> (containerized only)
 
+### 🔍 Search Engine (Port 7700)
+
+Meilisearch high-performance search engine providing instant search for documentation.
+
+**Key Features:**
+
+- **Engine**: Meilisearch v1.10 with typo tolerance and instant search
+- **API**: RESTful search API with comprehensive filtering options
+- **Performance**: Sub-20ms search response with highlighting
+- **Security**: Main key authentication and CORS support
+- **Indexing**: Automatic document indexing from Antora build output
+- **UI Integration**: Real-time search with result highlighting in documentation
+
+**Development**: Automatically indexed when running `task docs:build`  
+**Production**: <http://localhost:7700> (containerized) - API endpoint only
+
 ## 🏗️ Docker Architecture
 
 ### Container Overview
-```
-┌─────────────────────────────────────────────────────────────┐
-│                   Docker Network: doc-network               │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │   Web App   │  │    Docs     │  │    Uptime Kuma     │  │
-│  │   + Caddy   │  │  + Caddy    │  │   (Monitoring)      │  │
-│  │   :8080     │  │   :8081     │  │      :3001          │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
-│         │                │                     │            │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │ Persistent  │  │ Persistent  │  │    Persistent       │  │
-│  │   Storage   │  │   Storage   │  │     Storage         │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+
+```text
+┌───────────────────────────────────────────────────────────────────────┐
+│                     Docker Network: doc-network                       │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │
+│  │   Web App   │  │    Docs     │  │ Meilisearch │  │   Uptime Kuma   │  │
+│  │   + Caddy   │  │  + Caddy    │  │   Search    │  │  (Monitoring)   │  │
+│  │   :8080     │  │   :8081     │  │   :7700     │  │     :3001       │  │
+│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────────┘  │
+│         │                │               │                 │            │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │
+│  │ Persistent  │  │ Persistent  │  │ Persistent  │  │   Persistent    │  │
+│  │   Storage   │  │   Storage   │  │   Storage   │  │    Storage      │  │
+│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────────┘  │
+└───────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Persistent Data Volumes
+
 - **`caddy_data_web`** & **`caddy_config_web`** - Web server configuration and data
 - **`caddy_data_docs`** & **`caddy_config_docs`** - Documentation server data  
+- **`meilisearch_data`** - Search engine indexes and configuration
 - **`uptime_kuma_data`** - Monitoring dashboard data and configuration
 
 All data persists across container restarts and updates.
@@ -336,6 +422,7 @@ task docker:logs
 **Services Available:**
 - **Web Frontend**: <http://localhost:8080>
 - **Documentation**: <http://localhost:8081>  
+- **Search Engine**: <http://localhost:7700> (API only)
 - **Status Monitor**: <http://localhost:3001>
 
 ### Development Deployment
@@ -388,7 +475,8 @@ The web frontend uses a custom Tailwind configuration with the d-o-c brand color
 
 All services include health check endpoints:
 - **Web**: `/health` - Returns "OK"
-- **Docs**: `/health` - Returns "Antora Documentation OK" 
+- **Docs**: `/health` - Returns "Antora Documentation OK"
+- **Search**: `/health` - Returns Meilisearch health status
 - **Uptime Kuma**: `/` - Dashboard availability
 
 ### Container Monitoring
@@ -433,6 +521,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Task Documentation](https://taskfile.dev/)
 - [pnpm Workspaces](https://pnpm.io/workspaces)
 - [Antora](https://antora.org/)
+- [Meilisearch](https://www.meilisearch.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
 - [Caddy Web Server](https://caddyserver.com/)
 - [Uptime Kuma](https://github.com/louislam/uptime-kuma)

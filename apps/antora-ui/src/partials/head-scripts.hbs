@@ -5,13 +5,16 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id={{this}}"></script>
     <script>function gtag(){dataLayer.push(arguments)};window.dataLayer=window.dataLayer||[];gtag('js',new Date());gtag('config','{{this}}')</script>
 {{/with}}
-<script src="{{{uiRootPath}}}/js/vendor/lunr.js"></script>
-<script src="/search-index.js"></script>
-<script id="search-ui-script" 
-        src="{{{uiRootPath}}}/js/search-ui.js"
-        data-site-root-path=""
-        data-snippet-length="100"
-        data-stylesheet="{{{uiRootPath}}}/css/search.css"></script>
+
+{{!-- Override default Antora search with Meilisearch --}}
+<script>
+// Override Antora search initialization to prevent conflicts
+window.antoraSearch = { initSearch: function() { console.log('Antora search disabled, using Meilisearch'); } };
+</script>
+<script src="{{{uiRootPath}}}/js/vendor/meilisearch.umd.js"></script>
+<script src="{{{uiRootPath}}}/js/search-config.js"></script>
+<script src="{{{uiRootPath}}}/js/vendor/meilisearch-search.js"></script>
+
 {{#with site.keys.segmentWrite }}
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 {{/with}}

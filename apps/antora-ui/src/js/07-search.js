@@ -1,10 +1,9 @@
 ;(function () {
   'use strict'
 
-  // The Antora Lunr extension handles all search functionality automatically
-  // when the search-index.js, lunr.js, and search-ui.js files are loaded.
-  // 
-  // This file is kept for any additional search customizations if needed in the future.
+  // Search functionality now provided by Meilisearch
+  // The meilisearch-search.js script handles all search functionality automatically
+  // when the search-config.js and meilisearch SDK files are loaded.
   
-  console.log('Search functionality provided by Antora Lunr extension')
+  console.log('Search functionality provided by Meilisearch')
 })()

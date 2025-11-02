@@ -41,6 +41,10 @@ tasks:
     desc: Start all Docker containers with persistent data
     cmds:
     - docker compose up -d
+    - |
+      echo "⏳ Waiting for services to be ready..."
+      timeout 60 sh -c 'until docker compose ps | grep -q "healthy\|running"; do sleep 2; done' || echo "⚠️  Services may still be starting"
+    - task: search:index
 
   docker:down:
     desc: Stop all Docker containers
@@ -73,7 +77,7 @@ tasks:
     - docker compose logs -f uptime-kuma
 
   docker:status:
-    desc: Show status of all containers
+    desc: Show status of all containers including Meilisearch
     cmds:
     - docker compose ps
 
@@ -90,6 +94,7 @@ tasks:
       echo "🌐 Web Frontend:      http://localhost:8080"
       echo "📚 Documentation:    http://localhost:8081"
       echo "📊 Status Monitor:   http://localhost:3001"
+      echo "🔍 Search (Meilisearch): http://localhost:7700"
       echo ""
       echo "Container Status:"
       docker compose ps
@@ -120,9 +125,59 @@ tasks:
     dir: apps/docs
     cmds:
     - pnpm build
+    - task: search:index
 
   docs:serve:
     desc: Serve built Antora documentation
     dir: apps/docs
     cmds:
     - pnpm serve
+
+  search:index:
+    desc: Index documentation in Meilisearch
+    dir: apps/docs/indexer
+    cmds:
+    - |
+      echo "⏳ Waiting for Meilisearch to be ready..."
+      timeout 30 sh -c '
+        while ! curl -s http://localhost:7700/health > /dev/null 2>&1; do
+          echo "Waiting for Meilisearch..."
+          sleep 2
+        done
+      ' || { echo "❌ Meilisearch not ready after 30s"; exit 1; }
+      echo "🔍 Indexing documentation..."
+      node index.js
+
+  search:status:
+    desc: Check Meilisearch status and document count
+    cmds:
+    - |
+      echo "🔍 Meilisearch Status:"
+      curl -s http://localhost:7700/health || echo "❌ Meilisearch not accessible"
+      echo ""
+      echo "📊 Document Count:"
+      curl -s "http://localhost:7700/indexes/docs/stats" -H "Authorization: Bearer masterKey123" | grep -o '"numberOfDocuments":[0-9]*' || echo "❌ Cannot retrieve stats"
+
+  search:clear:
+    desc: Clear all documents from Meilisearch index
+    cmds:
+    - |
+      echo "🗑️ Clearing Meilisearch index..."
+      curl -X DELETE "http://localhost:7700/indexes/docs/documents" -H "Authorization: Bearer masterKey123"
+      echo "✅ Index cleared"
+
+  search:test:
+    desc: Test search functionality
+    cmds:
+    - |
+      echo "🔍 Testing search for 'installation':"
+      curl -s "http://localhost:7700/indexes/docs/search" \
+        -H "Authorization: Bearer masterKey123" \
+        -H "Content-Type: application/json" \
+        -d '{"q": "installation", "limit": 3}' | \
+        grep -o '"title":"[^"]*"' | head -3 || echo "❌ Search failed"
+
+  docker:logs:meilisearch:
+    desc: View logs from Meilisearch container only
+    cmds:
+    - docker compose logs -f meilisearch

@@ -15,7 +15,6 @@ asciidoc:
     attributes:
         source-highlighter: highlight.js
 antora:
-    extensions:
-      - '@antora/lunr-extension'
+    extensions: []
 output:
     dir: ./build/site

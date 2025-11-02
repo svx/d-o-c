@@ -28,7 +28,7 @@ RUN pnpm install --frozen-lockfile
 
 # Build the UI bundle first
 WORKDIR /app/apps/antora-ui
-RUN pnpm build
+RUN npx gulp bundle
 
 # Build Antora documentation
 WORKDIR /app/apps/docs

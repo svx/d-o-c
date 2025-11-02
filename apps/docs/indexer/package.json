@@ -1,0 +1,15 @@
+{
+  "name": "@d-o-c/meilisearch-indexer",
+  "version": "1.0.0",
+  "description": "Index Antora documentation into Meilisearch",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "index": "node index.js"
+  },
+  "dependencies": {
+    "meilisearch": "^0.41.0",
+    "cheerio": "^1.0.0-rc.12",
+    "glob": "^10.3.10"
+  }
+}

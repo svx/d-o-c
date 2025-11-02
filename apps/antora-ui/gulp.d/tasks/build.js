@@ -80,6 +80,10 @@ module.exports = (src, dest, preview) => () => {
     // NOTE use the next line to bundle a JavaScript library that cannot be browserified, like jQuery
     //vfs.src(require.resolve('<package-name-or-require-path>'), opts).pipe(concat('js/vendor/<library-name>.js')),
     vfs.src(require.resolve('simple-datatables/dist/umd/simple-datatables.js'), opts).pipe(concat('js/vendor/simple-datatables.js')),
+    // Add Meilisearch JavaScript files (copy as individual files)
+    vfs.src('js/vendor/meilisearch.umd.js', opts),
+    vfs.src('js/vendor/meilisearch-search.js', opts),
+    vfs.src('js/search-config.js', opts),
     vfs
       .src(['css/site.css', 'css/vendor/*.css'], { ...opts, sourcemaps })
       .pipe(postcss((file) => ({ plugins: postcssPlugins, options: { file } }))),
