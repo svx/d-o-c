@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Installation :: d-o-c Documentation</title>
+    <link rel="canonical" href="http://localhost:8081/docs/1.0/installation.html">
+    <link rel="prev" href="index.html">
+    <link rel="next" href="usage.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<script src="../../_/js/vendor/lunr.js"></script>
+<script src="/search-index.js"></script>
+<script id="search-ui-script" 
+        src="../../_/js/search-ui.js"
+        data-site-root-path=""
+        data-snippet-length="100"
+        data-stylesheet="../../_/css/search.css"></script>
+
+<link rel="icon" href="../../_/img/favicon.png" type="image/x-icon">
+  </head>
+  <body class="article tracking-normal leading-5 text-[16px]">
+<header class="flex flex-col max-w-full px-[32px] md:px-9 pt-6 border-b border-vapor bg-white sticky top-0 z-10">
+  <div class="flex items-center justify-between mb-7">
+    <!-- Logo + Title -->
+    <div class="flex items-center space-x-2">
+      <a href="../../">
+        <img src="../../_/img/logo.svg" alt="CircleCI Logo" class="h-[44px]">
+      </a>
+    </div>
+
+    <!-- Search Bar -->
+
+    <div class="hidden md:block flex-1 md:px-4">
+  <div class="relative w-full max-w-[888px] mx-auto">
+    <input
+      type="text"
+      id="search-input"
+      data-search-input
+      placeholder="Search Docs"
+      class="w-full py-2 pl-6 pr-4 border rounded-full border-vapor focus:outline-none focus:ring-2 focus:ring-vapor focus:border-transparent"
+    >
+    <button data-search-clear class="absolute inset-y-0 right-5 flex items-center gap-2 pl-3 text-link-on-light">
+      Clear
+      <img class="w-3 h-3" src="../../_/img/close.svg" alt="Search Icon">
+    </button>
+  </div>
+</div>
+
+    <!-- Localization + CTA -->
+
+    <div class="flex items-center space-x-4 ml-2">
+      <!--<img src="../../_/img/language-icon.svg" alt="Language Icon" class="h-5 w-5">-->
+    </div>
+  </div>
+
+  <!-- Components Nav -->
+
+  <nav data-component-explorer-nav class="flex flex-col md:flex-row md:items-center justify-between text-terminal-black font-medium md:font-light hidden md:flex overflow-x-auto whitespace-nowrap gap-3">
+
+  <ul class="flex flex-col md:flex-row md:space-x-8">
+      <li class="flex items-center mr-2">
+        <a href="index.html" class="inline-block px-2 py-2 md:py-3  text-link-on-light md:text-inherit border-l-2 md:border-l-0 md:border-b-2 border-accent-green font-medium  ">
+          d-o-c Documentation
+        </a>
+      </li>
+  </ul>
+
+  <ul class="flex flex-col ml-2 mt-10 md:mt-0 md:ml-0 md:flex-row gap-2">
+    <!-- External navigation links removed for AsciiDoc linter documentation -->
+  </ul>
+</nav>
+
+  <div data-search-results-container class="flex flex-col md:flex-row gap-4 md:gap-8 hidden flex-1 pt-6 overflow-auto bg-white">
+  <nav data-search-result-paths>
+    <ul class="flex md:flex-col gap-2 px-2 overflow-x-scroll md:overflow-x-hidden">
+      <li data-search-result-path-group>
+        <button class="flex-0 flex gap-2 px-3 py-2 border-b-2 border-accent-green md:border md:border-link-on-light md:rounded-full whitespace-nowrap min-w-fit">
+          <p>[path]</p>
+          <span class="text-[10px] border rounded-full py-1 px-1.5">[numberOfHits]</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+  <div class="flex-1 max-w-[800px]">
+    <div data-results-current-path class="hidden md:flex gap-2 mb-6 items-center">
+      <h2 class="font-medium text-[24px]">[path]</h2>
+      <span class="text-[10px] border rounded-full py-1 px-1.5">[numberOfHits]</span>
+    </div>
+    <div data-search-results class="flex flex-col gap-4">
+      <a data-search-result class="flex flex-col gap-2 hover:bg-inline-grey rounded-xl py-2 px-0 md:px-3" href="[url]">
+        <h3 class="text-[20px] font-medium">[title]</h3>
+        <p>[content]</p>
+      </a>
+    </div>
+    <div class="flex gap-2 py-4 justify-center md:justify-start">
+      <button data-search-result-prev class="flex items-center">
+        <svg width="16" height="12" viewBox="0 0 16 12" class="inline-block text-disabled-element group-hover:stroke-inherit" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0.292893 5.29289C-0.0976311 5.68342 -0.0976311 6.31658 0.292893 6.70711L5.29289 11.7071C5.68342 12.0976 6.31658 12.0976 6.70711 11.7071C7.09763 11.3166 7.09763 10.6834 6.70711 10.2929L3.41421 7H15C15.5523 7 16 6.55228 16 6C16 5.44772 15.5523 5 15 5H3.41421L6.70711 1.70711C7.09763 1.31658 7.09763 0.683417 6.70711 0.292894C6.31658 -0.0976312 5.68342 -0.0976312 5.29289 0.292894L0.292893 5.29289Z" fill="currentColor"/>
+        </svg>
+      </button>
+      <div data-search-result-pagination class="flex items-center justify-between gap-2">
+        <button class="bg-link-on-light px-[20px] py-[10px] rounded-full text-white">1</button>
+        <button class="p-4 rounded-full">2</button>
+        <span class="p-4 rounded-full">...</span>
+        <button class="p-4 rounded-full">12</button>
+      </div>
+      <button data-search-result-next class="flex items-center">
+        <svg width="16" height="12" viewBox="0 0 16 12" class="inline-block rotate-180 text-link-on-light group-hover:stroke-inherit" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0.292893 5.29289C-0.0976311 5.68342 -0.0976311 6.31658 0.292893 6.70711L5.29289 11.7071C5.68342 12.0976 6.31658 12.0976 6.70711 11.7071C7.09763 11.3166 7.09763 10.6834 6.70711 10.2929L3.41421 7H15C15.5523 7 16 6.55228 16 6C16 5.44772 15.5523 5 15 5H3.41421L6.70711 1.70711C7.09763 1.31658 7.09763 0.683417 6.70711 0.292894C6.31658 -0.0976312 5.68342 -0.0976312 5.29289 0.292894L0.292893 5.29289Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+</header>
+<div class="flex h-full w-full">
+<div data-page-navigation class="w-full lg:w-2/6 flex-initial lg:max-w-[420px] lg:min-w-[360px] h-full border-r border-vapor fixed lg:sticky inset-0 lg:top-0 lg:h-screen transform -translate-x-full lg:translate-x-0 transition-transform duration-300 z-50 lg:z-auto bg-white"  data-tcomponent="docs" data-tversion="1.0">
+  <aside class="relative h-full py-6 px-9 overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-fog scrollbar-track-vapor scrollbar-track-border">
+    <div class="flex items-center justify-between lg:hidden text-terminal-black mb-10">
+      <img data-page-navigation-back-button src="../../_/img/arrow-back.svg" alt="Arrow Back" class="invisible lg:hidden h-4 w-4">
+      <h3 class="font-medium"> d-o-c Documentation</h3>
+      <img data-page-navigation-toggle src="../../_/img/close.svg" alt="Close Navigation" class="h-4 w-4">
+    </div>
+    <div class="md:hidden mb-12">
+  <div class="relative w-full max-w-[888px] mx-auto">
+    <input
+      type="text"
+      id="search-input"
+      data-search-input
+      placeholder="Search Docs"
+      class="w-full py-2 pl-6 pr-4 border rounded-full border-vapor focus:outline-none focus:ring-2 focus:ring-vapor focus:border-transparent"
+    >
+    <button data-search-clear class="absolute inset-y-0 right-5 flex items-center gap-2 pl-3 text-link-on-light">
+      Clear
+      <img class="w-3 h-3" src="../../_/img/close.svg" alt="Search Icon">
+    </button>
+  </div>
+</div>
+    <div data-search-results-container class="flex flex-col md:flex-row gap-4 md:gap-8 hidden">
+  <nav data-search-result-paths>
+    <ul class="flex md:flex-col gap-2 px-2 overflow-x-scroll md:overflow-x-hidden">
+      <li data-search-result-path-group>
+        <button class="flex-0 flex gap-2 px-3 py-2 border-b-2 border-accent-green md:border md:border-link-on-light md:rounded-full whitespace-nowrap min-w-fit">
+          <p>[path]</p>
+          <span class="text-[10px] border rounded-full py-1 px-1.5">[numberOfHits]</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+  <div class="flex-1 max-w-[800px]">
+    <div data-results-current-path class="hidden md:flex gap-2 mb-6 items-center">
+      <h2 class="font-medium text-[24px]">[path]</h2>
+      <span class="text-[10px] border rounded-full py-1 px-1.5">[numberOfHits]</span>
+    </div>
+    <div data-search-results class="flex flex-col gap-4">
+      <a data-search-result class="flex flex-col gap-2 hover:bg-inline-grey rounded-xl py-2 px-0 md:px-3" href="[url]">
+        <h3 class="text-[20px] font-medium">[title]</h3>
+        <p>[content]</p>
+      </a>
+    </div>
+    <div class="flex gap-2 py-4 justify-center md:justify-start">
+      <button data-search-result-prev class="flex items-center">
+        <svg width="16" height="12" viewBox="0 0 16 12" class="inline-block text-disabled-element group-hover:stroke-inherit" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0.292893 5.29289C-0.0976311 5.68342 -0.0976311 6.31658 0.292893 6.70711L5.29289 11.7071C5.68342 12.0976 6.31658 12.0976 6.70711 11.7071C7.09763 11.3166 7.09763 10.6834 6.70711 10.2929L3.41421 7H15C15.5523 7 16 6.55228 16 6C16 5.44772 15.5523 5 15 5H3.41421L6.70711 1.70711C7.09763 1.31658 7.09763 0.683417 6.70711 0.292894C6.31658 -0.0976312 5.68342 -0.0976312 5.29289 0.292894L0.292893 5.29289Z" fill="currentColor"/>
+        </svg>
+      </button>
+      <div data-search-result-pagination class="flex items-center justify-between gap-2">
+        <button class="bg-link-on-light px-[20px] py-[10px] rounded-full text-white">1</button>
+        <button class="p-4 rounded-full">2</button>
+        <span class="p-4 rounded-full">...</span>
+        <button class="p-4 rounded-full">12</button>
+      </div>
+      <button data-search-result-next class="flex items-center">
+        <svg width="16" height="12" viewBox="0 0 16 12" class="inline-block rotate-180 text-link-on-light group-hover:stroke-inherit" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0.292893 5.29289C-0.0976311 5.68342 -0.0976311 6.31658 0.292893 6.70711L5.29289 11.7071C5.68342 12.0976 6.31658 12.0976 6.70711 11.7071C7.09763 11.3166 7.09763 10.6834 6.70711 10.2929L3.41421 7H15C15.5523 7 16 6.55228 16 6C16 5.44772 15.5523 5 15 5H3.41421L6.70711 1.70711C7.09763 1.31658 7.09763 0.683417 6.70711 0.292894C6.31658 -0.0976312 5.68342 -0.0976312 5.29289 0.292894L0.292893 5.29289Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>    <nav data-component-explorer-nav class="flex flex-col md:flex-row md:items-center justify-between text-terminal-black font-medium md:font-light hidden overflow-x-auto whitespace-nowrap gap-3">
+
+  <ul class="flex flex-col md:flex-row md:space-x-8">
+      <li class="flex items-center mr-2">
+        <a href="index.html" class="inline-block px-2 py-2 md:py-3  text-link-on-light md:text-inherit border-l-2 md:border-l-0 md:border-b-2 border-accent-green font-medium  ">
+          d-o-c Documentation
+        </a>
+      </li>
+  </ul>
+
+  <ul class="flex flex-col ml-2 mt-10 md:mt-0 md:ml-0 md:flex-row gap-2">
+    <!-- External navigation links removed for AsciiDoc linter documentation -->
+  </ul>
+</nav>
+    <div class="flex flex-col space-between">
+      <div data-left-side-nav-container>
+  <nav data-left-side-nav>
+        <ul class="text-terminal-black font-light">
+  <li data-navigation-tree-content class="my-1" data-depth="0" >
+  </li>
+  <li data-navigation-tree-children class="">
+    <ul class="pr-2 pl-6 text-terminal-black font-light">
+  <li data-navigation-tree-content class="my-1" data-depth="1" >
+      <div data-navigation-tree-toggle class="flex items-center py-[8px] px-[12px] space-x-2 max-w-fit  ">
+          <a class="nav-link hover:text-link-on-light " href="index.html">Home</a>
+      </div>
+  </li>
+  <li data-navigation-tree-children class="">
+      </li>
+  <li data-navigation-tree-content class="my-1" data-depth="1"  data-current>
+      <div data-navigation-tree-toggle class="flex items-center py-[8px] px-[12px] space-x-2 max-w-fit  rounded-lg bg-fog ">
+          <span class="">Installation</span>
+      </div>
+  </li>
+  <li data-navigation-tree-children class="">
+      </li>
+  <li data-navigation-tree-content class="my-1" data-depth="1" >
+      <div data-navigation-tree-toggle class="flex items-center py-[8px] px-[12px] space-x-2 max-w-fit  ">
+          <a class="nav-link hover:text-link-on-light " href="usage.html">Usage</a>
+      </div>
+  </li>
+  <li data-navigation-tree-children class="">
+      </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+      <a href="https://app.circleci.com/" class="fslex items-center mt-4 ml-2 gap-2 font-medium md:hidden bg-white" >
+        Go to Application
+        <div class="inline-flex h-[24px] w-[24px] bg-accent-green rounded items-center justify-center">
+          <img src="../../_/img/arrow-back.svg" alt="Go to Application" class="rotate-180 w-[13px] h-[13px]">
+        </div>
+      </a>
+    </div>
+  </aside>
+</div>
+  <div class="flex flex-col w-full xl:items-center">
+    <!-- Component Dropdown for Mobile -->
+<div class="md:hidden flex justify-center px-[32px] mt-6 mb-4">
+  <div data-dropdown class="w-full relative flex justify-center items-center text-sm font-normal">
+  <!-- Trigger Button -->
+  <button
+    data-dropdown-button
+    class="px-4 py-3 border rounded-full text-sm m-auto w-full text-left flex items-center justify-between focus:border-link-on-light hover:border-link-on-light"
+    aria-haspopup="true"
+    aria-expanded="false"
+  >
+    <span data-dropdown-selected>d-o-c Documentation</span>
+    <img src="../../_/img/arrow-down.svg" alt="Toggle" class="w-[8px] h-[8px]">
+  </button>
+
+  <!-- Dropdown Menu -->
+  <ul
+    data-dropdown-menu
+    class="w-full absolute top-10 py-2 left-0 rounded-xl shadow-default bg-white max-h-60 overflow-y-scroll z-50 hidden"
+    role="listbox"
+    tabindex="-1"
+  >
+      <li
+        data-dropdown-option
+        class="ml-2 p-[8px] hover:bg-fog cursor-pointer rounded-lg max-w-fit"
+        role="option"
+        data-value=""
+        data-label="d-o-c Documentation"
+      >
+          <a href="index.html">
+            d-o-c Documentation
+          </a>
+      </li>
+  </ul></div>
+</div>
+    <main class="article w-full max-w-screen">
+<div role="navigation" aria-label="Article Toolbar" class="flex flex-col max-w-[800px] md:items-center mx-[32px] md:ml-[3.5rem] lg:ml-12 mt-6 md:mt-12 md:flex-row text-sm font-light" >
+  <nav aria-label="breadcrumbs">
+  <ul>
+    <li class="inline after:text-[#959595] after:content-['/'] after:px-2">
+      <a class="text-link-on-light font-normal" href="index.html">Home</a>
+    </li>
+    <li class="inline after:text-[#959595] after:content-['/'] after:px-2"><a class="text-[#343434] font-normal" href="index.html">d-o-c Documentation</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="flex flex-col lg:flex-row w-full">
+<article class="doc max-w-full overflow-x-hidden">
+<h1 class="page">Installation</h1>
+<div class="sect1">
+<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Node.js 18.0.0 or later</p>
+</li>
+<li>
+<p>pnpm 8.0.0 or later (recommended)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installing_from_npm"><a class="anchor" href="#_installing_from_npm"></a>Installing from npm</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Using pnpm (recommended)
+pnpm add @testthedocs/asciidoc-linter
+
+# Using npm
+npm install @testthedocs/asciidoc-linter
+
+# Using yarn
+yarn add @testthedocs/asciidoc-linter</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_global_installation"><a class="anchor" href="#_global_installation"></a>Global installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For command-line usage, install globally:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pnpm add -g @testthedocs/asciidoc-linter</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_verify_installation"><a class="anchor" href="#_verify_installation"></a>Verify installation</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">adoc-lint --version</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_development_installation"><a class="anchor" href="#_development_installation"></a>Development installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To install for development:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone https://github.com/ocular-d/asciidoc-linter.git
+cd asciidoc-linter
+pnpm install
+pnpm run build</code></pre>
+</div>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="On This Page" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+  <footer class="mt-10 mb-12 border-t border-vapor w-full text-sm px-12 pt-6">
+  <nav class="pagination flex items-center justify-between mt-8 mb-4 px-4 py-2 border border-gray-200 rounded" aria-label="Page navigation">
+  <div class="pagination-prev">
+    <a href="index.html" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 hover:text-gray-700">
+      <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+      </svg>
+      Previous
+    </a>
+    <div class="text-xs text-gray-500 mt-1">
+      
+    </div>
+  </div>
+
+  <div class="pagination-next text-right">
+    <a href="usage.html" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 hover:text-gray-700">
+      Next
+      <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+      </svg>
+    </a>
+    <div class="text-xs text-gray-500 mt-1">
+      
+    </div>
+  </div>
+</nav>
+  <!--
+  <div class="flex flex-col md:flex-row md:items-center">
+    <h4 class="text-xl font-normal">
+      Was this page helpful ?
+    </h4>
+    <div class="inline-flex mt-6 md:mt-0 md:ml-8 space-x-4">
+      <button class="rounded-md px-2 py-2 inline-flex justify-center items-center border border-vapor space-x-1">
+        <img src="../../_/img/thumbs-up.svg" alt="Thumbs Up" class="inline-block w-4 h-4">
+        <span class="font-light">
+          Yes
+        </span>
+      </button>
+      <button class="rounded-md px-2 py-2 inline-flex justify-center items-center border border-vapor space-x-1">
+        <img src="../../_/img/thumbs-down.svg" alt="Thumbs Up" class="inline-block w-4 h-4">
+        <span class="font-light">
+          No
+        </span>
+      </button>
+    </div>
+
+  </div>
+  -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+
+
+  </div>
+  </footer>
+</main>
+    <footer class="mt-6 pb-24 w-full px-12">
+
+  <img src="../../_/img/logo.svg" alt="CircleCI Logo" class="h-[44px]">
+
+  <div class="font-light mt-6">
+    <ul class="flex space-x-6 space-y-4 flex-col md:flex-row">
+      <li>
+        <p>
+        </p>
+      </li>
+      <ul class="flex flex-wrap space-x-6 space-y-4">
+        <li>
+          <a href="https://antora.org/">Made with Antora</a>
+        </li>
+        <li>
+          <a href="https://github.com/circleci/circleci-docs/">Theme based on the CircleCI Docs UI</a>
+        </li>
+      </ul>
+
+    </ul>
+    <ul class="flex space-x-4 items-center mt-5">
+    </ul>
+  </div>
+</footer>
+<script src="../../_/js/vendor/simple-datatables.js"></script>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script src="../../_/js/vendor/lunr.js"></script>
+<script src="../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../.." data-snippet-length="100" data-stylesheet="../../_/css/search.css"></script>
+<script async src="../../search-index.js"></script>
+  </div>
+</div>
+  </body>
+</html>

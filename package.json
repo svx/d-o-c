@@ -8,9 +8,9 @@
     "build": "pnpm -r build",
     "start": "pnpm --parallel --stream -r start",
     "clean": "pnpm -r clean",
-    "docs:dev": "pnpm --filter docs dev",
+    "docs:dev": "pnpm --filter docs watch",
     "docs:build": "pnpm --filter docs build",
-    "docs:preview": "pnpm --filter docs preview"
+    "docs:serve": "pnpm --filter docs serve"
   },
   "keywords": [
     "documentation",

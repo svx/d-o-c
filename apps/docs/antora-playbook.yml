@@ -1,0 +1,21 @@
+site:
+    title: d-o-c Documentation
+    start_page: docs::index.adoc
+    url: http://localhost:8081
+content:
+    sources:
+      - url: ../../
+        branches: [ HEAD ]
+        start_path: apps/docs/src
+ui:
+    bundle:
+        url: ../antora-ui/build/ui-bundle.zip
+        snapshot: true
+asciidoc:
+    attributes:
+        source-highlighter: highlight.js
+antora:
+    extensions:
+      - '@antora/lunr-extension'
+output:
+    dir: ./build/site

@@ -110,19 +110,19 @@ tasks:
       fi
 
   docs:dev:
-    desc: Start VitePress documentation development server
+    desc: Start Antora documentation development server with watch mode
     dir: apps/docs
     cmds:
-    - pnpm dev
+    - pnpm watch
 
   docs:build:
-    desc: Build VitePress documentation
+    desc: Build Antora documentation
     dir: apps/docs
     cmds:
     - pnpm build
 
-  docs:preview:
-    desc: Preview VitePress documentation build
+  docs:serve:
+    desc: Serve built Antora documentation
     dir: apps/docs
     cmds:
-    - pnpm preview
+    - pnpm serve

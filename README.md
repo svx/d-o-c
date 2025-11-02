@@ -2,14 +2,14 @@
 
 Documentation Operations Center
 
-A modern Node.js repository with containerized services using pnpm workspaces, VitePress documentation, Caddy web servers, and Uptime Kuma monitoring.
+A modern Node.js repository with containerized services using pnpm workspaces, Antora documentation, Caddy web servers, and Uptime Kuma monitoring.
 
 ## 📋 Overview
 
 This repository contains a complete containerized documentation and monitoring infrastructure:
 
 - **🌐 Web Frontend** (`apps/web`): Modern web interface with Tailwind CSS served by Caddy
-- **📚 Documentation** (`apps/docs`): VitePress-powered documentation served by Caddy  
+- **📚 Documentation** (`apps/docs`): Antora-powered documentation served by Caddy  
 - **📊 Status Monitor**: Uptime Kuma dashboard for service monitoring and alerts
 
 ## 🚀 Quick Start
@@ -58,7 +58,7 @@ task docs:dev
 pnpm docs:dev
 ```
 
-This will start the documentation server on <http://localhost:5173>
+This will start the documentation development server with watch mode at <http://localhost:8080>
 
 ### Production with Docker Compose
 
@@ -71,7 +71,7 @@ task docker:up
 
 This will start three services:
 - **🌐 Web Frontend**: <http://localhost:8080> (Caddy + Tailwind CSS)
-- **📚 Documentation**: <http://localhost:8081> (Caddy + VitePress)  
+- **📚 Documentation**: <http://localhost:8081> (Caddy + Antora)  
 - **📊 Status Monitor**: <http://localhost:3001> (Uptime Kuma)
 
 View logs from all services:
@@ -102,10 +102,16 @@ task docker:down
 
 ## 📖 Documentation
 
-Comprehensive documentation is available at the VitePress documentation site. Start the docs server locally:
+Comprehensive documentation is available at the Antora documentation site. Start the docs server locally:
 
 ```bash
 task docs:dev
+```
+
+Or serve the built documentation:
+
+```bash
+task docs:serve
 ```
 
 Or view the available tasks:
@@ -152,15 +158,13 @@ d-o-c/
 │   │   ├── Dockerfile         # Multi-stage build with Caddy
 │   │   ├── tailwind.config.js # Tailwind configuration
 │   │   └── package.json
-│   └── docs/                   # VitePress documentation with Caddy
-│       ├── .vitepress/
-│       │   ├── config.js       # VitePress configuration
-│       │   └── theme/          # Custom theme (testthedocs style)
-│       ├── guide/              # Documentation pages
-│       ├── api/                # API documentation
-│       ├── web/                # Web app documentation
+│   └── docs/                   # Antora documentation with Caddy
+│       ├── src/                # Antora documentation source
+│       ├── antora-playbook.yml # Antora configuration
+│       ├── build/              # Built documentation output
 │       ├── Caddyfile          # Caddy server config for docs
 │       ├── Dockerfile         # Multi-stage build with Caddy
+│       ├── favicon.svg        # Shared favicon
 │       └── package.json
 ├── macos/
 │   └── com.doc.docker-compose.plist
@@ -181,9 +185,9 @@ d-o-c/
 - `task clean` - Clean all node_modules
 
 ### Documentation Tasks
-- `task docs:dev` - Start documentation development server
-- `task docs:build` - Build documentation for production
-- `task docs:preview` - Preview documentation build
+- `task docs:dev` - Start Antora documentation development server with watch mode
+- `task docs:build` - Build Antora documentation for production
+- `task docs:serve` - Serve built Antora documentation
 
 ### Docker Tasks
 - `task docker:build` - Build all Docker images (web, docs, uptime-kuma)
@@ -212,7 +216,7 @@ Modern web interface with Tailwind CSS styling served by Caddy.
 **Key Features:**
 
 - **Server**: Caddy 2 with automatic HTTPS
-- **Styling**: Tailwind CSS with VitePress color scheme
+- **Styling**: Tailwind CSS with custom brand color scheme
 - **Performance**: Gzip compression, static asset caching
 - **Security**: Security headers, XSS protection
 - **Health Checks**: Built-in health monitoring
@@ -222,17 +226,17 @@ Modern web interface with Tailwind CSS styling served by Caddy.
 
 ### 📚 Documentation (Port 8081)
 
-VitePress-powered documentation served by Caddy with optimized caching.
+Antora-powered documentation served by Caddy with optimized caching.
 
 **Key Features:**
 
-- **Framework**: VitePress with custom theme
+- **Framework**: Antora with custom UI
 - **Server**: Caddy 2 with SPA routing support
-- **Theme**: Custom styling matching testthedocs/awesome-docs
+- **Theme**: Custom UI bundle with d-o-c branding
 - **Performance**: Optimized caching for HTML/CSS/JS
 - **Features**: Interactive navigation, search functionality
 
-**Development**: <http://localhost:5173>  
+**Development**: <http://localhost:8080> (watch mode)  
 **Production**: <http://localhost:8081> (containerized)
 
 ### 📊 Status Monitor (Port 3001)
@@ -307,9 +311,9 @@ Both web and docs containers use optimized multi-stage builds:
 
 ### Documentation Updates
 
-1. Edit files in the `apps/docs/` directory
+1. Edit files in the `apps/docs/src/` directory
 2. Start the docs dev server: `task docs:dev`
-3. View changes at <http://localhost:5173>
+3. View changes at <http://localhost:8080>
 
 ## 🚀 Deployment
 
@@ -372,7 +376,7 @@ Both web and docs services use Caddy with optimized configurations:
 
 ### Tailwind CSS
 
-The web frontend uses a custom Tailwind configuration matching the VitePress theme colors:
+The web frontend uses a custom Tailwind configuration with the d-o-c brand colors:
 
 - **Primary Brand Color**: `#5469d4`
 - **Color Palette**: Extended brand colors (50-900)
@@ -384,7 +388,7 @@ The web frontend uses a custom Tailwind configuration matching the VitePress the
 
 All services include health check endpoints:
 - **Web**: `/health` - Returns "OK"
-- **Docs**: `/health` - Returns "VitePress Documentation OK" 
+- **Docs**: `/health` - Returns "Antora Documentation OK" 
 - **Uptime Kuma**: `/` - Dashboard availability
 
 ### Container Monitoring
@@ -428,7 +432,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [Task Documentation](https://taskfile.dev/)
 - [pnpm Workspaces](https://pnpm.io/workspaces)
-- [VitePress](https://vitepress.dev/)
+- [Antora](https://antora.org/)
 - [Docker Compose](https://docs.docker.com/compose/)
 - [Caddy Web Server](https://caddyserver.com/)
 - [Uptime Kuma](https://github.com/louislam/uptime-kuma)

@@ -1,0 +1,8 @@
+name: docs
+title: d-o-c Documentation
+version: '1.0'
+asciidoc:
+  attributes:
+    page-pagination@: true
+nav:
+- modules/ROOT/nav.adoc
