@@ -1,0 +1,144 @@
+= Using Your Image in BrowserWindow
+
+Since you have `screen-1.png` in your images folder, here's exactly how to use it:
+
+== Your Image Example
+
+=== Method 1: Mixed Content (AsciiDoc + HTML)
+
+++++
+<div class="browser-window" style="min-height: 450px;">
+  <div class="browser-window-header">
+    <div class="browser-window-buttons">
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+    </div>
+    <div class="browser-window-address-bar">https://asciidoc-linter.example.com</div>
+    <div class="browser-window-menu-icon">
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+    </div>
+  </div>
+  <div class="browser-window-body">
+++++
+
+image::screen-1.png[AsciiDoc Linter Interface, role="browser-screenshot"]
+
+++++
+  </div>
+</div>
+++++
+
+=== Method 2: Pure HTML
+
+++++
+<div class="browser-window" style="min-height: 450px;">
+  <div class="browser-window-header">
+    <div class="browser-window-buttons">
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+    </div>
+    <div class="browser-window-address-bar">https://asciidoc-linter.example.com</div>
+    <div class="browser-window-menu-icon">
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+    </div>
+  </div>
+  <div class="browser-window-body">
+    <img src="_images/screen-1.png" alt="AsciiDoc Linter Interface" class="browser-screenshot" />
+  </div>
+</div>
+++++
+
+== Copy-Paste Templates
+
+=== Template 1: Mixed Content (Recommended)
+
+[source,asciidoc]
+----
+++++
+<div class="browser-window" style="min-height: 450px;">
+  <div class="browser-window-header">
+    <div class="browser-window-buttons">
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+    </div>
+    <div class="browser-window-address-bar">YOUR_URL_HERE</div>
+    <div class="browser-window-menu-icon">
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+    </div>
+  </div>
+  <div class="browser-window-body">
+++++
+
+image::YOUR_IMAGE.png[Your Description, role="browser-screenshot"]
+
+++++
+  </div>
+</div>
+++++
+----
+
+=== Template 2: Pure HTML
+
+[source,asciidoc]
+----
+++++
+<div class="browser-window" style="min-height: 450px;">
+  <div class="browser-window-header">
+    <div class="browser-window-buttons">
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+    </div>
+    <div class="browser-window-address-bar">YOUR_URL_HERE</div>
+    <div class="browser-window-menu-icon">
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+    </div>
+  </div>
+  <div class="browser-window-body">
+    <img src="_images/YOUR_IMAGE.png" alt="Your Description" class="browser-screenshot" />
+  </div>
+</div>
+++++
+----
+
+Replace:
+- `YOUR_URL_HERE` with your desired URL
+- `YOUR_IMAGE.png` with your image filename
+- `Your Description` with appropriate alt text
+
+== Different URL Examples
+
+=== Development Environment
+[source,asciidoc]
+----
+<div class="browser-window-address-bar">http://localhost:3000</div>
+----
+
+=== Production App
+[source,asciidoc]
+----
+<div class="browser-window-address-bar">https://app.mycompany.com</div>
+----
+
+=== API Documentation
+[source,asciidoc]
+----
+<div class="browser-window-address-bar">https://api.docs.myservice.com</div>
+----
+
+=== Admin Dashboard
+[source,asciidoc]
+----
+<div class="browser-window-address-bar">https://admin.myapp.com/dashboard</div>
+----

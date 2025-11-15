@@ -1,0 +1,234 @@
+= BrowserWindow Component
+
+The BrowserWindow component allows you to create authentic-looking browser mockups in your documentation, perfect for showcasing web applications, APIs, or websites.
+
+== Overview
+
+The BrowserWindow component mimics a real browser window with:
+
+* macOS-style window controls (red, yellow, green dots)
+* Address bar displaying the URL
+* Hamburger menu icon
+* Content area for your content or iframe
+
+== Usage Patterns
+
+=== 1. Inline Macro
+
+For simple URL displays with iframes:
+
+----
+browser-window:https://example.com[]
+browser-window:https://example.com[height=400]
+----
+
+=== 2. Block Macro
+
+For URLs with custom height:
+
+----
+browser::https://docs.example.com[height=500]
+----
+
+=== 3. Delimited Block
+
+For custom content instead of iframes:
+
+----
+[browser-window, url="https://app.example.com", height=350]
+--
+Your custom content goes here.
+Can include any AsciiDoc markup.
+--
+----
+
+== Live Examples
+
+=== Simple Website Preview
+
+browser-window:https://antora.org[height=400]
+
+=== Custom Content Example
+
+[browser-window, url="https://my-dashboard.com", height=300]
+--
+== 📊 Dashboard Overview
+
+[cols="2,1,1"]
+|===
+|Metric |Value |Change
+
+|Users
+|1,234
+|📈 +15%
+
+|Revenue  
+|$12,345
+|💰 +8%
+
+|Sessions
+|5,678
+|📊 +12%
+|===
+
+TIP: This is custom content inside a browser window mockup!
+--
+
+=== API Response Example
+
+[browser-window, url="https://api.example.com/v1/users", height=350]
+--
+.GET /api/v1/users Response
+[source,json]
+----
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "John Doe", 
+      "email": "john@example.com",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "email": "jane@example.com", 
+      "role": "user"
+    }
+  ],
+  "meta": {
+    "total": 2,
+    "page": 1,
+    "per_page": 10
+  }
+}
+----
+--
+
+=== Code Example Display
+
+[browser-window, url="https://code.example.com", height=400]
+--
+.React Component Example
+[source,jsx]
+----
+import React from 'react';
+
+function Welcome({ name }) {
+  return (
+    <div className="welcome">
+      <h1>Hello, {name}!</h1>
+      <p>Welcome to our application.</p>
+    </div>
+  );
+}
+
+export default Welcome;
+----
+
+This component can be used like:
+[source,jsx]
+----
+<Welcome name="Developer" />
+----
+--
+
+== Available Attributes
+
+[cols="1,2,1,2"]
+|===
+|Attribute |Description |Default |Example
+
+|`url`
+|URL shown in the address bar
+|`http://localhost:3000`
+|`url="https://myapp.com"`
+
+|`height`
+|Minimum height in pixels
+|`300`
+|`height=500`
+
+|`title`
+|Accessible title for screen readers
+|`Browser Window`
+|`title="Dashboard"`
+|===
+
+== Best Practices
+
+=== When to Use
+
+* ✅ Showcasing web applications
+* ✅ Demonstrating API responses  
+* ✅ Displaying code examples in context
+* ✅ Creating visual mockups
+* ✅ Educational tutorials
+
+=== When NOT to Use
+
+* ❌ For simple code blocks (use regular source blocks)
+* ❌ For non-web content
+* ❌ When the browser context isn't relevant
+
+=== Tips
+
+. **Choose appropriate heights**: Consider your content when setting height
+. **Use meaningful URLs**: The address bar URL should relate to your content
+. **Keep it responsive**: The component works on mobile, but test your content
+. **Combine with admonitions**: Great for tips, warnings, or notes about the shown content
+. **Image sizing**: Images automatically scale to fit the browser window width
+. **Alt text**: Always provide descriptive alt text for accessibility
+. **File formats**: Use web-optimized formats (PNG, JPG, WebP) for best performance
+. **Image context**: Add captions or descriptions to explain what the image shows
+
+== Styling and Theming
+
+The BrowserWindow component automatically adapts to light and dark themes. It uses CSS custom properties for easy customization:
+
+[source,css]
+----
+.doc .browser-window {
+  /* Customize border color */
+  border-color: var(--your-border-color);
+}
+
+.doc .browser-window-header {
+  /* Customize header background */
+  background: var(--your-header-bg);
+}
+----
+
+== Troubleshooting
+
+=== Component Not Rendering
+
+1. Ensure the extension is properly registered in `antora-playbook.yml`
+2. Check that the extension file exists at the specified path  
+3. Rebuild your UI bundle if you modified CSS
+4. Verify AsciiDoc syntax is correct
+
+=== Styling Issues
+
+1. Clear your browser cache
+2. Rebuild the Antora UI bundle
+3. Check CSS custom properties are defined
+4. Verify no conflicting styles
+
+=== Content Not Displaying
+
+1. For iframe content: Check the URL is accessible
+2. For custom content: Verify AsciiDoc syntax
+3. Check browser console for errors
+4. Ensure height is sufficient for your content
+
+== Browser Support
+
+The BrowserWindow component works in all modern browsers:
+
+* ✅ Chrome 60+
+* ✅ Firefox 60+
+* ✅ Safari 12+
+* ✅ Edge 79+
+
+Mobile devices are fully supported with responsive design.

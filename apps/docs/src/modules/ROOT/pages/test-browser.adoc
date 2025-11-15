@@ -1,0 +1,76 @@
+= Test Page
+
+++++
+<div class="browser-window" style="min-height: 300px;">
+  <div class="browser-window-header">
+    <div class="browser-window-buttons">
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+    </div>
+    <div class="browser-window-address-bar">https://example.com</div>
+    <div class="browser-window-menu-icon">
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+    </div>
+  </div>
+  <div class="browser-window-body">
+    <p>This is a test of the BrowserWindow component using raw HTML.</p>
+  </div>
+</div>
+++++
+
+== Browser Window with Image
+
+Here's an example with an image:
+
+++++
+<div class="browser-window" style="min-height: 450px;">
+  <div class="browser-window-header">
+    <div class="browser-window-buttons">
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+    </div>
+    <div class="browser-window-address-bar">https://asciidoc-linter.app</div>
+    <div class="browser-window-menu-icon">
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+    </div>
+  </div>
+  <div class="browser-window-body">
+    <img src="_images/screen-1.png" alt="AsciiDoc Linter Screenshot" class="browser-screenshot" />
+  </div>
+</div>
+++++
+
+== Mixed Content Example
+
+You can also mix AsciiDoc and HTML:
+
+++++
+<div class="browser-window" style="min-height: 400px;">
+  <div class="browser-window-header">
+    <div class="browser-window-buttons">
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+    </div>
+    <div class="browser-window-address-bar">https://docs.example.com</div>
+    <div class="browser-window-menu-icon">
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+    </div>
+  </div>
+  <div class="browser-window-body">
+++++
+
+image::screen-1.png[AsciiDoc Linter Screenshot, role="browser-screenshot"]
+
+++++
+  </div>
+</div>
+++++

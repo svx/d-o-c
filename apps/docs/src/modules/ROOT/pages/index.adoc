@@ -11,6 +11,10 @@ The AsciiDoc Linter is a minimal, extensible tool for linting AsciiDoc documents
 * **Fast**: Built with TypeScript and Node.js for performance
 * **CLI and programmatic API**: Use from command line or integrate into your build process
 
+== Test Image
+
+image::screen-1.png[AsciiDoc Linter Screenshot]
+
 == Quick Start
 
 .Installation
@@ -24,6 +28,89 @@ pnpm add @testthedocs/asciidoc-linter
 ----
 adoc-lint my-document.adoc
 ----
+
+== Browser Window Component
+
+The documentation includes a BrowserWindow component that mimics browser interfaces, perfect for showcasing web applications, APIs, or websites.
+
+=== Basic Usage
+
+You can use the browser window component with different syntaxes:
+
+.Inline macro (for URLs only)
+[source,asciidoc]
+----
+browser-window:https://example.com[]
+----
+
+.Block macro with content
+[source,asciidoc]
+----
+browser::https://docs.example.com[height=300]
+----
+
+=== Examples
+
+Here are some live examples of the BrowserWindow component:
+
+.Simple URL display (inline macro)
+browser-window:https://d-o-c-docs.localhost:8081[]
+
+.API Documentation with custom height
+browser::https://api.example.com/docs[height=400]
+
+.Browser window with custom content block
+[browser-window, url="https://app.example.com", height=350, title="Custom App"]
+--
+[source,html]
+----
+<h1>Welcome to My App</h1>
+<p>This is custom content inside a browser window!</p>
+<button>Click Me</button>
+----
+--
+
+.Another content example
+[browser-window, url="https://dashboard.example.com", height=250]
+--
+This is a dashboard interface showing:
+
+* User statistics
+* Recent activity  
+* Performance metrics
+--
+
+=== Advanced Usage
+
+You can customize the browser window with various attributes:
+
+* `url` - The URL shown in the address bar
+* `height` - Minimum height of the component (default: 300px)  
+* `title` - Accessible title for screen readers
+
+.Complex example with code
+[browser-window, url="https://api.docs.example.com/v1/users", height=400]
+--
+[source,json]
+----
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com"
+    },
+    {
+      "id": 2, 
+      "name": "Jane Smith",
+      "email": "jane@example.com"
+    }
+  ],
+  "total": 2,
+  "page": 1
+}
+----
+--
 
 == Getting Help
 

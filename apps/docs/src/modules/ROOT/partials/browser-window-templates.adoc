@@ -1,0 +1,97 @@
+// BrowserWindow Image Examples
+// Copy and customize these templates for your own use
+
+// === BASIC IMAGE TEMPLATE ===
+// Simple image display in browser window
+++++
+<div class="browser-window" style="min-height: 400px;">
+  <div class="browser-window-header">
+    <div class="browser-window-buttons">
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+    </div>
+    <div class="browser-window-address-bar">YOUR_URL_HERE</div>
+    <div class="browser-window-menu-icon">
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+    </div>
+  </div>
+  <div class="browser-window-body">
+++++
+
+image::YOUR_IMAGE.png[Image Description, role="browser-screenshot"]
+
+++++
+  </div>
+</div>
+++++
+
+// === IMAGE WITH CAPTION TEMPLATE ===
+// Image with descriptive caption
+++++
+<div class="browser-window" style="min-height: 450px;">
+  <div class="browser-window-header">
+    <div class="browser-window-buttons">
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+    </div>
+    <div class="browser-window-address-bar">YOUR_URL_HERE</div>
+    <div class="browser-window-menu-icon">
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+    </div>
+  </div>
+  <div class="browser-window-body">
+++++
+
+.Your Caption Here
+image::YOUR_IMAGE.png[Image Description, role="browser-screenshot"]
+
+++++
+  </div>
+</div>
+++++
+
+// === IMAGE WITH CONTEXT TEMPLATE ===
+// Image with additional context and notes
+++++
+<div class="browser-window" style="min-height: 500px;">
+  <div class="browser-window-header">
+    <div class="browser-window-buttons">
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+    </div>
+    <div class="browser-window-address-bar">YOUR_URL_HERE</div>
+    <div class="browser-window-menu-icon">
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+    </div>
+  </div>
+  <div class="browser-window-body">
+++++
+
+.Your Caption Here
+image::YOUR_IMAGE.png[Image Description, role="browser-screenshot"]
+
+NOTE: Add any important notes or context about the image here.
+
+TIP: This feature is available in version 2.0 and later.
+
+++++
+  </div>
+</div>
+++++
+
+// === USAGE INSTRUCTIONS ===
+// Replace the following placeholders:
+// - YOUR_URL_HERE: The URL to display in the address bar (e.g., https://myapp.com)
+// - YOUR_IMAGE.png: Your image filename (must be in the images folder)
+// - Image Description: Descriptive alt text for accessibility
+// - Your Caption Here: Optional caption for the image
+// - Adjust min-height as needed for your image size

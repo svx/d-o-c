@@ -1,0 +1,27 @@
+// Browser Window with Image Template
+// Usage: include::partial$browser-window-image.adoc[url=https://example.com,image=my-screenshot.png,alt=Screenshot description,height=400]
+
+++++
+<div class="browser-window" style="min-height: {height}px;">
+  <div class="browser-window-header">
+    <div class="browser-window-buttons">
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+    </div>
+    <div class="browser-window-address-bar">{url}</div>
+    <div class="browser-window-menu-icon">
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+    </div>
+  </div>
+  <div class="browser-window-body">
+++++
+
+image::{image}[{alt}, role="browser-screenshot"]
+
+++++
+  </div>
+</div>
+++++

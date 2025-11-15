@@ -1,0 +1,138 @@
+= BrowserWindow with Images - Quick Guide
+
+This guide shows you how to easily display images in BrowserWindow components.
+
+== Quick Start
+
+=== 1. Basic Image Display
+
+Simply replace `YOUR_URL_HERE` and `your-image.png` in this template:
+
+[source,asciidoc]
+----
+++++
+<div class="browser-window" style="min-height: 400px;">
+  <div class="browser-window-header">
+    <div class="browser-window-buttons">
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+    </div>
+    <div class="browser-window-address-bar">YOUR_URL_HERE</div>
+    <div class="browser-window-menu-icon">
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+    </div>
+  </div>
+  <div class="browser-window-body">
+++++
+
+image::your-image.png[Image Description, role="browser-screenshot"]
+
+++++
+  </div>
+</div>
+++++
+----
+
+=== 2. Image Requirements
+
+* **Location**: Place your images in `/apps/docs/src/modules/ROOT/images/`
+* **Formats**: PNG, JPG, WebP (PNG recommended for screenshots)
+* **Size**: Images automatically resize to fit the browser window
+* **Alt text**: Always include descriptive alt text for accessibility
+
+=== 3. URL Examples
+
+Choose meaningful URLs that match your content:
+
+* `https://dashboard.myapp.com` - For dashboard screenshots
+* `https://api.myservice.com` - For API documentation
+* `https://app.example.com/login` - For login page mockups
+* `https://admin.mysite.com` - For admin interfaces
+
+== Common Use Cases
+
+=== App Screenshots
+
+[source,asciidoc]
+----
+++++
+<div class="browser-window" style="min-height: 500px;">
+  <div class="browser-window-header">
+    <div class="browser-window-buttons">
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+    </div>
+    <div class="browser-window-address-bar">https://myapp.com</div>
+    <div class="browser-window-menu-icon">
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+    </div>
+  </div>
+  <div class="browser-window-body">
+++++
+
+.Main Application Interface
+image::app-screenshot.png[Main app interface showing user dashboard, role="browser-screenshot"]
+
+++++
+  </div>
+</div>
+++++
+----
+
+=== API Documentation
+
+[source,asciidoc]
+----
+++++
+<div class="browser-window" style="min-height: 400px;">
+  <div class="browser-window-header">
+    <div class="browser-window-buttons">
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+      <span class="browser-window-dot"></span>
+    </div>
+    <div class="browser-window-address-bar">https://api.docs.com/swagger</div>
+    <div class="browser-window-menu-icon">
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+      <span class="browser-window-menu-bar"></span>
+    </div>
+  </div>
+  <div class="browser-window-body">
+++++
+
+image::api-docs-screenshot.png[Swagger API documentation interface, role="browser-screenshot"]
+
+++++
+  </div>
+</div>
+++++
+----
+
+== Tips
+
+* **Height**: Set `min-height` based on your image dimensions (image height + 100px padding)
+* **Responsive**: Images automatically scale on mobile devices
+* **Context**: Add captions or notes to explain what users should notice in the image
+* **Quality**: Use high-resolution images for crisp display on retina screens
+
+== Troubleshooting
+
+**Image not showing?**
+- Check the image path: `src/modules/ROOT/images/your-image.png`
+- Verify the filename matches exactly (case-sensitive)
+- Ensure the image format is supported (PNG, JPG, WebP)
+
+**Browser window too small?**
+- Increase the `min-height` value
+- Check image dimensions and add ~100px for the browser header and padding
+
+**Image looks blurry?**
+- Use higher resolution images
+- Optimize images for web (compress without losing too much quality)

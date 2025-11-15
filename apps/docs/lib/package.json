@@ -1,0 +1,7 @@
+{
+  "name": "browser-window-extension",
+  "version": "1.0.0",
+  "description": "Antora extension for browser window component",
+  "main": "browser-window-extension.js",
+  "dependencies": {}
+}
