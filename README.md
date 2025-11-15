@@ -9,8 +9,9 @@ A modern Node.js repository with containerized services using pnpm workspaces, V
 This repository contains a complete containerized documentation and monitoring infrastructure:
 
 - **🌐 Web Frontend** (`apps/web`): Modern web interface with Tailwind CSS served by Caddy
-- **📚 Documentation** (`apps/docs`): VitePress-powered documentation served by Caddy  
+- **📚 Documentation** (`apps/docs`): VitePress-powered documentation served by Caddy
 - **📊 Status Monitor**: Uptime Kuma dashboard for service monitoring and alerts
+- **🔖 Bookmark Manager**: Linkwarden for collaborative bookmark management with PostgreSQL
 
 ## 🚀 Quick Start
 
@@ -69,10 +70,11 @@ task docker:build
 task docker:up
 ```
 
-This will start three services:
+This will start four services:
 - **🌐 Web Frontend**: <http://localhost:8080> (Caddy + Tailwind CSS)
-- **📚 Documentation**: <http://localhost:8081> (Caddy + VitePress)  
+- **📚 Documentation**: <http://localhost:8081> (Caddy + VitePress)
 - **📊 Status Monitor**: <http://localhost:3001> (Uptime Kuma)
+- **🔖 Bookmark Manager**: <http://localhost:3002> (Linkwarden + PostgreSQL)
 
 View logs from all services:
 
@@ -83,9 +85,11 @@ task docker:logs
 View logs from individual services:
 
 ```bash
-task docker:logs:web      # Web frontend logs
-task docker:logs:docs     # Documentation logs  
-task docker:logs:uptime   # Uptime Kuma logs
+task docker:logs:web           # Web frontend logs
+task docker:logs:docs          # Documentation logs
+task docker:logs:uptime        # Uptime Kuma logs
+task docker:logs:linkwarden    # Linkwarden logs
+task docker:logs:linkwarden-db # Linkwarden database logs
 ```
 
 Check service status:
@@ -119,7 +123,7 @@ task --list
 To configure Docker Compose to start automatically on macOS startup:
 
 1. **Update the plist file**
-   
+
    Edit `macos/com.doc.docker-compose.plist` and replace `/PATH/TO/YOUR/d-o-c` with the actual path to this repository.
 
 2. **Run the setup task**
@@ -173,6 +177,7 @@ d-o-c/
 ## 🛠️ Available Tasks
 
 ### Development Tasks
+
 - `task help` - Show all available tasks
 - `task install` - Install all dependencies
 - `task dev` - Run all apps in development mode
@@ -181,11 +186,13 @@ d-o-c/
 - `task clean` - Clean all node_modules
 
 ### Documentation Tasks
+
 - `task docs:dev` - Start documentation development server
 - `task docs:build` - Build documentation for production
 - `task docs:preview` - Preview documentation build
 
 ### Docker Tasks
+
 - `task docker:build` - Build all Docker images (web, docs, uptime-kuma)
 - `task docker:up` - Start all containerized services
 - `task docker:down` - Stop all containers
@@ -193,12 +200,14 @@ d-o-c/
 - `task docker:status` - Show container status
 
 ### Docker Logging Tasks
+
 - `task docker:logs` - View logs from all containers
 - `task docker:logs:web` - View web frontend logs only
-- `task docker:logs:docs` - View documentation logs only  
+- `task docker:logs:docs` - View documentation logs only
 - `task docker:logs:uptime` - View Uptime Kuma logs only
 
 ### Service Management
+
 - `task services:info` - Show service URLs and status
 - `task docker:clean` - Clean up containers and volumes
 - `task setup:macos` - Setup macOS auto-startup
@@ -217,7 +226,7 @@ Modern web interface with Tailwind CSS styling served by Caddy.
 - **Security**: Security headers, XSS protection
 - **Health Checks**: Built-in health monitoring
 
-**Development**: <http://localhost:8080>  
+**Development**: <http://localhost:8080>
 **Production**: <http://localhost:8080> (containerized)
 
 ### 📚 Documentation (Port 8081)
@@ -232,7 +241,7 @@ VitePress-powered documentation served by Caddy with optimized caching.
 - **Performance**: Optimized caching for HTML/CSS/JS
 - **Features**: Interactive navigation, search functionality
 
-**Development**: <http://localhost:5173>  
+**Development**: <http://localhost:5173>
 **Production**: <http://localhost:8081> (containerized)
 
 ### 📊 Status Monitor (Port 3001)
@@ -249,33 +258,63 @@ Uptime Kuma monitoring dashboard for tracking service availability.
 
 **Production**: <http://localhost:3001> (containerized only)
 
+### 🔖 Bookmark Manager (Port 3002)
+
+Linkwarden collaborative bookmark and link management platform.
+
+**Key Features:**
+
+- **Service**: Linkwarden (Latest) + PostgreSQL 16
+- **Management**: Collaborative bookmark organization
+- **Collections**: Organize bookmarks in collections and folders
+- **Sharing**: Team collaboration and sharing features
+- **Archive**: Full-page archiving and search
+- **Data**: PostgreSQL database with persistent storage
+- **Security**: Built-in user authentication and access control
+
+**Production**: <http://localhost:3002> (containerized only)
+
+**Default Login**: Setup admin account on first visit
+
 ## 🏗️ Docker Architecture
 
 ### Container Overview
+
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                   Docker Network: doc-network               │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │   Web App   │  │    Docs     │  │    Uptime Kuma     │  │
-│  │   + Caddy   │  │  + Caddy    │  │   (Monitoring)      │  │
-│  │   :8080     │  │   :8081     │  │      :3001          │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
-│         │                │                     │            │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │ Persistent  │  │ Persistent  │  │    Persistent       │  │
-│  │   Storage   │  │   Storage   │  │     Storage         │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                        Docker Network: doc-network                           │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  ┌─────────────────┐  │
+│  │   Web App   │  │    Docs     │  │   Uptime Kuma   │  │   Linkwarden    │  │
+│  │   + Caddy   │  │  + Caddy    │  │  (Monitoring)   │  │  (Bookmarks)    │  │
+│  │   :8080     │  │   :8081     │  │     :3001       │  │     :3002       │  │
+│  └─────────────┘  └─────────────┘  └─────────────────┘  └─────────────────┘  │
+│         │                │                    │                    │         │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │  ┌─────────────┐  │
+│  │ Persistent  │  │ Persistent  │  │    Persistent   │  │  │ PostgreSQL  │  │
+│  │   Storage   │  │   Storage   │  │     Storage     │  │  │  Database   │  │
+│  └─────────────┘  └─────────────┘  └─────────────────┘  │  │   :5432     │  │
+│                                                         │  └─────────────┘  │
+│                                                         │         │         │
+│                                                         │  ┌─────────────┐  │
+│                                                         │  │ Persistent  │  │
+│                                                         │  │  Database   │  │
+│                                                         └──│   Storage   │──┘
+│                                                            └─────────────┘
+└──────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Persistent Data Volumes
+
 - **`caddy_data_web`** & **`caddy_config_web`** - Web server configuration and data
-- **`caddy_data_docs`** & **`caddy_config_docs`** - Documentation server data  
+- **`caddy_data_docs`** & **`caddy_config_docs`** - Documentation server data
 - **`uptime_kuma_data`** - Monitoring dashboard data and configuration
+- **`linkwarden_data`** - Linkwarden application data and archives
+- **`linkwarden_db_data`** - PostgreSQL database with bookmarks and user data
 
 All data persists across container restarts and updates.
 
 ### Multi-stage Builds
+
 Both web and docs containers use optimized multi-stage builds:
 1. **Build stage**: Node.js environment for building assets
 2. **Production stage**: Lightweight Caddy server with built assets
@@ -331,8 +370,9 @@ task docker:logs
 
 **Services Available:**
 - **Web Frontend**: <http://localhost:8080>
-- **Documentation**: <http://localhost:8081>  
+- **Documentation**: <http://localhost:8081>
 - **Status Monitor**: <http://localhost:3001>
+- **Bookmark Manager**: <http://localhost:3002>
 
 ### Development Deployment
 
@@ -357,6 +397,7 @@ Once deployed, configure Uptime Kuma to monitor your services:
 2. Create monitors for:
    - Web Frontend: <http://localhost:8080/health>
    - Documentation: <http://localhost:8081/health>
+   - Bookmark Manager: <http://localhost:3002/api/v1/public/status>
 3. Configure notifications (email, Slack, etc.)
 
 ## 🔧 Configuration
@@ -384,14 +425,15 @@ The web frontend uses a custom Tailwind configuration matching the VitePress the
 
 All services include health check endpoints:
 - **Web**: `/health` - Returns "OK"
-- **Docs**: `/health` - Returns "VitePress Documentation OK" 
+- **Docs**: `/health` - Returns "VitePress Documentation OK"
 - **Uptime Kuma**: `/` - Dashboard availability
+- **Linkwarden**: `/api/v1/public/status` - Service status and health
 
 ### Container Monitoring
 
 Docker Compose includes health checks for all containers:
 - **Interval**: 30 seconds
-- **Timeout**: 10 seconds  
+- **Timeout**: 10 seconds
 - **Retries**: 3 attempts
 - **Start Period**: 40-60 seconds
 
@@ -403,10 +445,12 @@ Access logs from any service:
 # All services
 task docker:logs
 
-# Individual services  
+# Individual services
 task docker:logs:web
 task docker:logs:docs
 task docker:logs:uptime
+task docker:logs:linkwarden
+task docker:logs:linkwarden-db
 
 # Follow logs in real-time
 docker compose logs -f [service-name]
@@ -432,4 +476,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Docker Compose](https://docs.docker.com/compose/)
 - [Caddy Web Server](https://caddyserver.com/)
 - [Uptime Kuma](https://github.com/louislam/uptime-kuma)
+- [Linkwarden](https://github.com/linkwarden/linkwarden)
 - [Tailwind CSS](https://tailwindcss.com/)

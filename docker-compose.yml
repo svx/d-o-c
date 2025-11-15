@@ -56,12 +56,57 @@ services:
       retries: 3
       start_period: 60s
 
+  linkwarden-db:
+    image: postgres:16
+    container_name: doc-linkwarden-db
+    environment:
+      POSTGRES_DB: linkwarden
+      POSTGRES_USER: linkwarden
+      POSTGRES_PASSWORD: linkwarden_password
+    volumes:
+      - linkwarden_db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - doc-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U linkwarden"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  linkwarden:
+    image: ghcr.io/linkwarden/linkwarden:latest
+    container_name: doc-linkwarden
+    ports:
+      - "3002:3000"
+    environment:
+      DATABASE_URL: "postgresql://linkwarden:linkwarden_password@linkwarden-db:5432/linkwarden"
+      NEXTAUTH_SECRET: "very-secret-nextauth-secret"
+      NEXTAUTH_URL: "http://localhost:3002"
+    volumes:
+      - linkwarden_data:/data/data
+    depends_on:
+      linkwarden-db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - doc-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/v1/public/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
 volumes:
   caddy_data_web:
   caddy_config_web:
   caddy_data_docs:
   caddy_config_docs:
   uptime_kuma_data:
+  linkwarden_db_data:
+  linkwarden_data:
 
 networks:
   doc-network:

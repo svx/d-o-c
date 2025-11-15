@@ -33,7 +33,7 @@ tasks:
     - rm -rf node_modules
 
   docker:build:
-    desc: Build all Docker images (web, docs, uptime-kuma)
+    desc: Build all Docker images (web, docs, uptime-kuma, linkwarden)
     cmds:
     - docker compose build --no-cache
 
@@ -72,6 +72,16 @@ tasks:
     cmds:
     - docker compose logs -f uptime-kuma
 
+  docker:logs:linkwarden:
+    desc: View logs from linkwarden container only
+    cmds:
+    - docker compose logs -f linkwarden
+
+  docker:logs:linkwarden-db:
+    desc: View logs from linkwarden-db container only
+    cmds:
+    - docker compose logs -f linkwarden-db
+
   docker:status:
     desc: Show status of all containers
     cmds:
@@ -90,6 +100,7 @@ tasks:
       echo "🌐 Web Frontend:      http://localhost:8080"
       echo "📚 Documentation:    http://localhost:8081"
       echo "📊 Status Monitor:   http://localhost:3001"
+      echo "🔖 Bookmark Manager: http://localhost:3002"
       echo ""
       echo "Container Status:"
       docker compose ps
