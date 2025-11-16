@@ -27,12 +27,14 @@
 	}
 	header @static Cache-Control "public, max-age=31536000"
 	
-	# Cache HTML files for shorter time
+	# No cache for HTML files to ensure updates are visible
 	@html {
 		file
 		path *.html
 	}
-	header @html Cache-Control "public, max-age=3600"
+	header @html Cache-Control "no-cache, no-store, must-revalidate"
+	header @html Pragma "no-cache"
+	header @html Expires "0"
 	
 	# Health check endpoint
 	respond /health 200 {

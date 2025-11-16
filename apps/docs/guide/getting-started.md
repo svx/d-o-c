@@ -11,6 +11,11 @@ This repository contains a complete containerized documentation and monitoring i
 - **🌐 Web Frontend** (`apps/web`): Modern web interface with Tailwind CSS served by Caddy
 - **📚 Documentation** (`apps/docs`): VitePress-powered documentation served by Caddy  
 - **📊 Status Monitor**: Uptime Kuma dashboard for service monitoring and alerts
+- **🔖 Bookmark Manager**: Linkwarden collaborative bookmark and link management
+- **📊 Analytics Dashboard**: Grafana monitoring with pre-configured dashboards
+- **📈 Container Monitor**: cAdvisor real-time container performance monitoring
+- **📈 Metrics Database**: Prometheus time-series database for metrics collection
+- **📊 System Metrics**: Node Exporter for system-level metrics and container discovery
 
 ## Prerequisites
 
@@ -79,7 +84,7 @@ d-o-c/
 │       └── package.json
 ├── macos/
 │   └── com.doc.docker-compose.plist
-├── docker-compose.yml          # Three containerized services
+├── docker-compose.yml          # Eleven containerized services
 ├── Taskfile.yml               # Enhanced task runner
 ├── pnpm-workspace.yaml
 └── package.json
@@ -117,10 +122,17 @@ task docker:build
 task docker:up
 ```
 
-This will start three services:
+This will start eleven services:
 - **🌐 Web Frontend**: <http://localhost:8080> (Caddy + Tailwind CSS)
 - **📚 Documentation**: <http://localhost:8081> (Caddy + VitePress)  
 - **📊 Status Monitor**: <http://localhost:3001> (Uptime Kuma)
+- **🔖 Bookmark Manager**: <http://localhost:3002> (Linkwarden + PostgreSQL)
+- **📊 Analytics Dashboard**: <http://localhost:3000> (Grafana)
+- **📈 Container Monitor**: <http://localhost:8082> (cAdvisor)
+- **📈 Metrics Database**: <http://localhost:9090> (Prometheus)
+- **📊 System Metrics**: <http://localhost:9100> (Node Exporter)
+
+> **🔐 Security Note:** Grafana uses default credentials (`admin`/`admin`). **Change the password immediately** after first login for security reasons.
 
 ## Key Features
 
@@ -131,10 +143,20 @@ This will start three services:
 - **Caddy**: High-performance web server with automatic HTTPS
 - **Docker Compose**: Multi-service containerization
 - **Uptime Kuma**: Beautiful monitoring dashboard
+- **Linkwarden**: Collaborative bookmark and link management
+- **Grafana**: Analytics and monitoring dashboards
+- **Prometheus**: Time-series metrics database
+- **cAdvisor**: Container performance monitoring
+- **Node Exporter**: System metrics collection
+- **PostgreSQL**: Reliable database backend
 
 ### Built-in Monitoring
 - Health check endpoints for all services
 - Uptime Kuma dashboard for service monitoring
+- Grafana analytics dashboard with container metrics
+- Prometheus metrics collection and storage
+- cAdvisor container performance monitoring
+- Node Exporter system metrics with automatic container discovery
 - Persistent data storage with Docker volumes
 - Container health checks and restart policies
 

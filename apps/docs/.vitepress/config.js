@@ -8,6 +8,9 @@ export default defineConfig({
   // Ignore dead links during build since we're referencing development URLs
   ignoreDeadLinks: true,
   
+  // Force cache refresh
+  cleanUrls: true,
+  
   // Configure favicon
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
@@ -15,6 +18,12 @@ export default defineConfig({
   
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
+    
+    // Enable local search
+    search: {
+      provider: 'local'
+    },
+    
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Guide', link: '/guide/getting-started' },

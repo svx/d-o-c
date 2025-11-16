@@ -35,6 +35,13 @@ This will start:
 - **Web Frontend**: http://localhost:8080 (Caddy + Tailwind CSS)
 - **Documentation**: http://localhost:8081 (Caddy + VitePress)
 - **Status Monitor**: http://localhost:3001 (Uptime Kuma)
+- **Bookmark Manager**: http://localhost:3002 (Linkwarden + PostgreSQL)
+- **Analytics Dashboard**: http://localhost:3000 (Grafana)
+- **Container Monitor**: http://localhost:8082 (cAdvisor)
+- **Metrics Database**: http://localhost:9090 (Prometheus)
+- **System Metrics**: http://localhost:9100 (Node Exporter)
+
+> **🔐 Security Note:** Grafana uses default credentials (`admin`/`admin`). Change the password after first login.
 
 ## Individual Services
 
@@ -83,6 +90,11 @@ Once running, you can access:
 | Docs | <http://localhost:5173> | Documentation site (dev) |
 | Docs | <http://localhost:8081> | Documentation site (production) |
 | Monitor | <http://localhost:3001> | Uptime Kuma dashboard |
+| Bookmarks | <http://localhost:3002> | Linkwarden bookmark manager |
+| Analytics | <http://localhost:3000> | Grafana monitoring dashboard |
+| Container Metrics | <http://localhost:8082> | cAdvisor container monitoring |
+| Metrics DB | <http://localhost:9090> | Prometheus time-series database |
+| System Metrics | <http://localhost:9100> | Node Exporter system metrics |
 
 ## Common Tasks
 
@@ -140,3 +152,6 @@ task install
 - Check out the [Web Frontend](/web/)
 - Learn about [Installation](/guide/installation)
 - Explore the monitoring dashboard at <http://localhost:3001>
+- Set up monitoring with Grafana at <http://localhost:3000>
+- Manage bookmarks with Linkwarden at <http://localhost:3002>
+- View container metrics at <http://localhost:8082>
