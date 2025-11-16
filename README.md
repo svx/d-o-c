@@ -12,6 +12,8 @@ This repository contains a complete containerized documentation and monitoring i
 - **📚 Documentation** (`apps/docs`): VitePress-powered documentation served by Caddy
 - **📊 Status Monitor**: Uptime Kuma dashboard for service monitoring and alerts
 - **🔖 Bookmark Manager**: Linkwarden for collaborative bookmark management with PostgreSQL
+- **📈 Container Monitor**: cAdvisor for Docker container resource monitoring
+- **📊 Analytics Dashboard**: Grafana with pre-configured Docker monitoring dashboard
 
 ## 🚀 Quick Start
 
@@ -70,11 +72,17 @@ task docker:build
 task docker:up
 ```
 
-This will start four services:
+This will start eight services:
 - **🌐 Web Frontend**: <http://localhost:8080> (Caddy + Tailwind CSS)
 - **📚 Documentation**: <http://localhost:8081> (Caddy + VitePress)
 - **📊 Status Monitor**: <http://localhost:3001> (Uptime Kuma)
 - **🔖 Bookmark Manager**: <http://localhost:3002> (Linkwarden + PostgreSQL)
+- **📈 Container Monitor**: <http://localhost:8082> (cAdvisor)
+- **📊 Analytics Dashboard**: <http://localhost:3000> (Grafana)
+- **📈 Metrics Database**: <http://localhost:9090> (Prometheus)
+- **📊 System Metrics**: <http://localhost:9100> (Node Exporter)
+
+> **🔐 Security Note:** Grafana uses default credentials (`admin`/`admin`). **Change the password immediately** after first login for security reasons.
 
 View logs from all services:
 
@@ -90,6 +98,8 @@ task docker:logs:docs          # Documentation logs
 task docker:logs:uptime        # Uptime Kuma logs
 task docker:logs:linkwarden    # Linkwarden logs
 task docker:logs:linkwarden-db # Linkwarden database logs
+task docker:logs:cadvisor      # cAdvisor logs
+task docker:logs:grafana       # Grafana logs
 ```
 
 Check service status:
@@ -276,31 +286,81 @@ Linkwarden collaborative bookmark and link management platform.
 
 **Default Login**: Setup admin account on first visit
 
+### 📈 Container Monitor (Port 8080)
+
+cAdvisor (Container Advisor) provides resource usage and performance data for containers.
+
+**Key Features:**
+
+- **Service**: cAdvisor (Latest)
+- **Monitoring**: Real-time container resource usage (CPU, memory, network, filesystem)
+- **Metrics**: Prometheus-compatible metrics endpoint
+- **Performance**: Low overhead container monitoring
+- **Data**: Resource usage statistics and historical data
+- **Integration**: Direct integration with Grafana dashboards
+
+**Production**: <http://localhost:8082> (containerized only)
+
+### 📊 Analytics Dashboard (Port 3000)
+
+Grafana analytics dashboard with pre-configured Docker monitoring dashboard.
+
+**Key Features:**
+
+- **Service**: Grafana (Latest)
+- **Dashboard**: Pre-loaded Docker monitoring dashboard (ID: 15798)
+- **Data Source**: cAdvisor metrics via Prometheus protocol
+- **Visualization**: CPU usage, memory consumption, container performance
+- **Authentication**: Admin login (admin/admin)
+- **Storage**: Persistent dashboard and configuration storage
+- **Alerting**: Built-in alerting and notification capabilities
+
+**Production**: <http://localhost:3000> (containerized only)
+
+**Default Login**: admin / admin
+
+> **⚠️ Important Security Note:** The default credentials are `admin`/`admin`. You **must change this password** immediately after your first login to secure your Grafana instance. Grafana will prompt you to change the password on first access.
+
+### 🔍 Automatic Container Name Detection
+
+The monitoring system automatically detects and displays container information in Grafana dashboards! The "Docker Monitoring" dashboard shows:
+
+- **Container service mappings** - Automatic discovery of all running containers with proper service names
+- **System resource usage** - CPU and memory metrics for overall system monitoring  
+- **Real-time discovery** - New containers appear automatically without manual configuration
+
+**Note**: Individual container metrics require Docker socket access, which has security limitations on macOS. The system provides system-level monitoring and complete container discovery.
+
 ## 🏗️ Docker Architecture
 
 ### Container Overview
 
 ```
-┌──────────────────────────────────────────────────────────────────────────────┐
-│                        Docker Network: doc-network                           │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  ┌─────────────────┐  │
-│  │   Web App   │  │    Docs     │  │   Uptime Kuma   │  │   Linkwarden    │  │
-│  │   + Caddy   │  │  + Caddy    │  │  (Monitoring)   │  │  (Bookmarks)    │  │
-│  │   :8080     │  │   :8081     │  │     :3001       │  │     :3002       │  │
-│  └─────────────┘  └─────────────┘  └─────────────────┘  └─────────────────┘  │
-│         │                │                    │                    │         │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │  ┌─────────────┐  │
-│  │ Persistent  │  │ Persistent  │  │    Persistent   │  │  │ PostgreSQL  │  │
-│  │   Storage   │  │   Storage   │  │     Storage     │  │  │  Database   │  │
-│  └─────────────┘  └─────────────┘  └─────────────────┘  │  │   :5432     │  │
-│                                                         │  └─────────────┘  │
-│                                                         │         │         │
-│                                                         │  ┌─────────────┐  │
-│                                                         │  │ Persistent  │  │
-│                                                         │  │  Database   │  │
-│                                                         └──│   Storage   │──┘
-│                                                            └─────────────┘
-└──────────────────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                              Docker Network: doc-network                                       │
+│ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐                │
+│ │ Web App  │ │   Docs   │ │  Uptime  │ │Linkwarden│ │ cAdvisor │ │ Grafana  │                │
+│ │ + Caddy  │ │ + Caddy  │ │   Kuma   │ │(Bookmark)│ │(Monitor) │ │(Analytics│                │
+│ │  :8080   │ │  :8081   │ │  :3001   │ │  :3002   │ │  :8082   │ │  :3000   │                │
+│ └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘                │
+│      │            │            │            │            │            │                       │
+│ ┌──────────┐ ┌──────────┐ ┌──────────┐      │     ┌──────────┐ ┌──────────┐                │
+│ │Persistent│ │Persistent│ │Persistent│      │     │  Docker  │ │Persistent│                │
+│ │ Storage  │ │ Storage  │ │ Storage  │      │     │   Host   │ │ Storage  │                │
+│ └──────────┘ └──────────┘ └──────────┘      │     │  Metrics │ └──────────┘                │
+│                                             │     └──────────┘                             │
+│                                      ┌──────────┐                                         │
+│                                      │PostgreSQL│                                         │
+│                                      │ Database │                                         │
+│                                      │  :5432   │                                         │
+│                                      └──────────┘                                         │
+│                                           │                                               │
+│                                      ┌──────────┐                                         │
+│                                      │Persistent│                                         │
+│                                      │ Database │                                         │
+│                                      │ Storage  │                                         │
+│                                      └──────────┘                                         │
+└────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Persistent Data Volumes
@@ -310,6 +370,7 @@ Linkwarden collaborative bookmark and link management platform.
 - **`uptime_kuma_data`** - Monitoring dashboard data and configuration
 - **`linkwarden_data`** - Linkwarden application data and archives
 - **`linkwarden_db_data`** - PostgreSQL database with bookmarks and user data
+- **`grafana_data`** - Grafana dashboards, configurations, and analytics data
 
 All data persists across container restarts and updates.
 
@@ -373,6 +434,10 @@ task docker:logs
 - **Documentation**: <http://localhost:8081>
 - **Status Monitor**: <http://localhost:3001>
 - **Bookmark Manager**: <http://localhost:3002>
+- **Container Monitor**: <http://localhost:8082> (cAdvisor)
+- **Analytics Dashboard**: <http://localhost:3000> (Grafana)
+- **Metrics Database**: <http://localhost:9090> (Prometheus)
+- **System Metrics**: <http://localhost:9100> (Node Exporter)
 
 ### Development Deployment
 
@@ -398,6 +463,10 @@ Once deployed, configure Uptime Kuma to monitor your services:
    - Web Frontend: <http://localhost:8080/health>
    - Documentation: <http://localhost:8081/health>
    - Bookmark Manager: <http://localhost:3002/api/v1/public/status>
+   - Container Monitor: <http://localhost:8082/healthz>
+   - Analytics Dashboard: <http://localhost:3000/api/health>
+   - Metrics Database: <http://localhost:9090/-/healthy>
+   - System Metrics: <http://localhost:9100/metrics>
 3. Configure notifications (email, Slack, etc.)
 
 ## 🔧 Configuration
@@ -428,6 +497,10 @@ All services include health check endpoints:
 - **Docs**: `/health` - Returns "VitePress Documentation OK"
 - **Uptime Kuma**: `/` - Dashboard availability
 - **Linkwarden**: `/api/v1/public/status` - Service status and health
+- **cAdvisor**: `/healthz` - Container monitoring health
+- **Grafana**: `/api/health` - Dashboard service health
+- **Prometheus**: `/-/healthy` - Metrics database health
+- **Node Exporter**: `/metrics` - System metrics health
 
 ### Container Monitoring
 
@@ -477,4 +550,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Caddy Web Server](https://caddyserver.com/)
 - [Uptime Kuma](https://github.com/louislam/uptime-kuma)
 - [Linkwarden](https://github.com/linkwarden/linkwarden)
+- [cAdvisor](https://github.com/google/cadvisor)
+- [Grafana](https://grafana.com/)
 - [Tailwind CSS](https://tailwindcss.com/)

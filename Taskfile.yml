@@ -33,7 +33,7 @@ tasks:
     - rm -rf node_modules
 
   docker:build:
-    desc: Build all Docker images (web, docs, uptime-kuma, linkwarden)
+    desc: Build all Docker images (web, docs, uptime-kuma, linkwarden, cadvisor, grafana)
     cmds:
     - docker compose build --no-cache
 
@@ -82,6 +82,16 @@ tasks:
     cmds:
     - docker compose logs -f linkwarden-db
 
+  docker:logs:cadvisor:
+    desc: View logs from cadvisor container only
+    cmds:
+    - docker compose logs -f cadvisor
+
+  docker:logs:grafana:
+    desc: View logs from grafana container only
+    cmds:
+    - docker compose logs -f grafana
+
   docker:status:
     desc: Show status of all containers
     cmds:
@@ -101,9 +111,15 @@ tasks:
       echo "📚 Documentation:    http://localhost:8081"
       echo "📊 Status Monitor:   http://localhost:3001"
       echo "🔖 Bookmark Manager: http://localhost:3002"
+      echo "📈 Container Stats:  http://localhost:8082 (cAdvisor)"
+      echo "📊 Grafana Dashboard: http://localhost:3000"
+      echo "📊 Prometheus:        http://localhost:9090"
       echo ""
       echo "Container Status:"
       docker compose ps
+      echo ""
+      echo "Container ID Mapping (for Grafana dashboard):"
+      docker ps --format "table {{.Names}}\t{{.ID}}" | grep -E "(doc-|NAMES)"
 
   setup:macos:
     desc: Setup macOS auto-startup (requires manual path update in plist file)
@@ -137,3 +153,11 @@ tasks:
     dir: apps/docs
     cmds:
     - pnpm preview
+
+  container-status:
+    desc: Show all containers with their service names and status
+    cmds:
+    - echo "=== Container Status Overview ==="
+    - docker ps --format "table {{`{{.Names}}`}}\t{{`{{.Status}}`}}\t{{`{{.Image}}`}}" --filter "name=doc-"
+    - echo ""
+    - echo "Check 'Docker Monitoring' dashboard in Grafana for detailed metrics"

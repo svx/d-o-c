@@ -99,6 +99,162 @@ services:
       retries: 3
       start_period: 90s
 
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: doc-cadvisor
+    ports:
+      - "8082:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg
+    command:
+      - '--housekeeping_interval=10s'
+      - '--docker_only=true'
+      - '--store_container_labels=true'
+      - '--whitelisted_container_labels=name,io.docker.compose.service,io.docker.compose.project'
+    restart: unless-stopped
+    networks:
+      - doc-network
+    privileged: true
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: doc-node-exporter
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - textfile_data:/var/lib/node_exporter/textfile_collector
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.textfile.directory=/var/lib/node_exporter/textfile_collector'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+    networks:
+      - doc-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9100/metrics"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  container-discovery:
+    image: alpine:latest
+    container_name: doc-container-discovery
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - textfile_data:/textfile_data
+    command:
+      - sh
+      - -c
+      - |
+        apk add --no-cache docker-cli jq
+        while true; do
+          echo '# Docker container name mappings' > /textfile_data/docker_containers.prom
+          echo '# TYPE docker_container_info gauge' >> /textfile_data/docker_containers.prom
+          echo '# HELP docker_container_info Container information with labels' >> /textfile_data/docker_containers.prom
+          
+          docker ps --format json | while read -r line; do
+            name=$$(echo "$$line" | jq -r '.Names')
+            id=$$(echo "$$line" | jq -r '.ID')
+            image=$$(echo "$$line" | jq -r '.Image')
+            
+            if [ "$$name" != "null" ] && [ "$$name" != "" ]; then
+              # Extract service name from container name (remove doc- prefix)
+              service_name=$${name#doc-}
+              short_id=$${id:0:12}
+              
+              # Get compose labels
+              compose_service=$$(docker inspect "$$name" --format '{{index .Config.Labels "com.docker.compose.service"}}' 2>/dev/null || echo "$$service_name")
+              compose_project=$$(docker inspect "$$name" --format '{{index .Config.Labels "com.docker.compose.project"}}' 2>/dev/null || echo 'unknown')
+              
+              if [ "$$compose_service" = "<no value>" ] || [ "$$compose_service" = "" ]; then
+                compose_service="$$service_name"
+              fi
+              if [ "$$compose_project" = "<no value>" ] || [ "$$compose_project" = "" ]; then
+                compose_project="unknown"
+              fi
+              
+              echo "docker_container_info{container_id=\"$$id\",container_name=\"$$name\",service_name=\"$$compose_service\",project_name=\"$$compose_project\",image=\"$$image\",short_id=\"$$short_id\"} 1" >> /textfile_data/docker_containers.prom
+            fi
+          done
+          sleep 30
+        done
+    restart: unless-stopped
+    networks:
+      - doc-network
+    depends_on:
+      - node-exporter
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: doc-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      cadvisor:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - doc-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: doc-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    depends_on:
+      cadvisor:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - doc-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
 volumes:
   caddy_data_web:
   caddy_config_web:
@@ -107,6 +263,9 @@ volumes:
   uptime_kuma_data:
   linkwarden_db_data:
   linkwarden_data:
+  grafana_data:
+  prometheus_data:
+  textfile_data:
 
 networks:
   doc-network:
