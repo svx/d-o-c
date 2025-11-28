@@ -43,7 +43,17 @@ tasks:
     - docker compose up -d
     - |
       echo "⏳ Waiting for services to be ready..."
-      timeout 60 sh -c 'until docker compose ps | grep -q "healthy\|running"; do sleep 2; done' || echo "⚠️  Services may still be starting"
+      count=0
+      while [ $count -lt 30 ]; do
+        if docker compose ps | grep -q "healthy\|running"; then
+          break
+        fi
+        sleep 2
+        count=$((count + 1))
+      done
+      if [ $count -eq 30 ]; then
+        echo "⚠️  Services may still be starting"
+      fi
     - task: search:index
 
   docker:down:
@@ -149,14 +159,19 @@ tasks:
     cmds:
     - |
       echo "⏳ Waiting for Meilisearch to be ready..."
-      timeout 30 sh -c '
-        while ! curl -s http://localhost:7700/health > /dev/null 2>&1; do
-          echo "Waiting for Meilisearch..."
-          sleep 2
-        done
-      ' || { echo "❌ Meilisearch not ready after 30s"; exit 1; }
-      echo "🔍 Indexing documentation..."
-      node index.js
+      count=0
+      while [ $count -lt 15 ]; do
+        if curl -s http://localhost:7700/health > /dev/null 2>&1; then
+          echo "🔍 Indexing documentation..."
+          node index.js
+          exit 0
+        fi
+        echo "Waiting for Meilisearch..."
+        sleep 2
+        count=$((count + 1))
+      done
+      echo "❌ Meilisearch not ready after 30s"
+      exit 1
 
   search:status:
     desc: Check Meilisearch status and document count
