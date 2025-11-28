@@ -104,8 +104,7 @@ tasks:
     cmds:
     - |
       echo "Before running this, update the WorkingDirectory path in macos/com.doc.docker-compose.plist"
-      read -p "Have you updated the path? (y/n) " -n 1 -r
-      echo
+      read -p "Have you updated the path? (y/n) " REPLY
       if [[ $REPLY =~ ^[Yy]$ ]]; then
         cp macos/com.doc.docker-compose.plist ~/Library/LaunchAgents/
         launchctl load ~/Library/LaunchAgents/com.doc.docker-compose.plist
