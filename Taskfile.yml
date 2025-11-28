@@ -76,6 +76,16 @@ tasks:
     cmds:
     - docker compose logs -f uptime-kuma
 
+  docker:logs:linkwarden:
+    desc: View logs from linkwarden container only
+    cmds:
+    - docker compose logs -f linkwarden
+
+  docker:logs:linkwarden-db:
+    desc: View logs from linkwarden-db container only
+    cmds:
+    - docker compose logs -f linkwarden-db
+
   docker:status:
     desc: Show status of all containers including Meilisearch
     cmds:
@@ -94,6 +104,7 @@ tasks:
       echo "🌐 Web Frontend:      http://localhost:8080"
       echo "📚 Documentation:    http://localhost:8081"
       echo "📊 Status Monitor:   http://localhost:3001"
+      echo "🔖 Bookmark Manager: http://localhost:3002"
       echo "🔍 Search (Meilisearch): http://localhost:7700"
       echo ""
       echo "Container Status:"
